@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Administrador local | CUENCA</title><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/admin.css"></head>
+<body class="admin-body"><header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">C</span><span><b>CUENCA</b><small>ADMINISTRACIÓN LOCAL</small></span></a><nav><a href="index.html">Ver sitio</a></nav></header>
+<main class="section page-section"><p class="eyebrow">HERRAMIENTA LOCAL</p><h1>Administración de casas</h1><p class="lead">Edita el catálogo en tu computadora y descarga el JSON actualizado. No se guardan datos en un servidor.</p>
+<div class="admin-toolbar"><label class="btn btn-outline file-button">Importar casas.json<input id="import-json" type="file" accept="application/json,.json"></label><button id="new-property" class="btn btn-dark" type="button">＋ Nueva casa</button><button id="export-json" class="btn btn-outline" type="button">Descargar casas.json</button></div><p id="admin-status" class="notice">Carga tu archivo casas.json o crea una nueva propiedad.</p>
+<div class="admin-layout"><aside class="admin-list"><h2>Propiedades</h2><div id="property-list"></div></aside>
+<section class="admin-editor"><h2 id="editor-heading">Editor de propiedad</h2><form id="property-form">
+<input type="hidden" name="id">
+<div class="form-grid">
+<label>Folio<input name="folio" required placeholder="INM-0001"></label><label>Estado de publicación<select name="estado"><option value="publicada">Publicada</option><option value="borrador">Borrador</option><option value="vendida">Vendida</option></select></label>
+<label class="full">Título comercial<input name="titulo" required placeholder="Casa en venta en…"></label>
+<label>Precio (MXN)<input name="precio" type="number" min="0" required></label><label>Precio negociable<select name="negociable"><option value="true">Sí</option><option value="false">No</option></select></label>
+<label class="full">Descripción<textarea name="descripcion" rows="4"></textarea></label>
+<label>Estado<input name="estadoUbicacion"></label><label>Municipio / alcaldía<input name="municipio"></label><label>Colonia<input name="colonia"></label><label>Código postal<input name="cp"></label><label class="full">Dirección pública o referencia<input name="direccion"></label>
+<label>Terreno (m²)<input name="terreno" type="number" min="0"></label><label>Construcción (m²)<input name="construccion" type="number" min="0"></label><label>Recámaras<input name="recamaras" type="number" min="0"></label><label>Baños completos<input name="banos" type="number" min="0"></label><label>Medios baños<input name="mediosBanos" type="number" min="0"></label><label>Estacionamientos<input name="estacionamientos" type="number" min="0"></label><label>Niveles<input name="niveles" type="number" min="0"></label><label>Antigüedad (años)<input name="antiguedad" type="number" min="0"></label>
+<label class="full">Servicios y equipamiento (separados por coma)<input name="servicios" placeholder="Cisterna, gas estacionario, cocina integral"></label>
+<label class="full">Entorno y comercios cercanos (separados por coma)<input name="entorno" placeholder="Plaza comercial, escuelas, parques"></label>
+<label class="full">Imagen de portada<input name="portada" type="file" accept="image/*"></label>
+</div>
+<div class="photo-preview" id="cover-preview"></div>
+<section class="spaces-editor"><div class="space-head"><h3>Espacios de la casa</h3><button id="add-space" type="button" class="btn btn-outline btn-small">＋ Agregar espacio</button></div><p class="muted">Registra sala, comedor, cocina, recámaras, baños, jardín u otros. La fotografía es opcional.</p><div id="spaces-list"></div></section>
+<div class="form-actions"><button class="btn btn-dark" type="submit">Guardar propiedad</button><button id="delete-property" class="btn btn-danger" type="button">Eliminar propiedad</button></div></form></section></div>
+<section class="admin-help"><h2>Cómo publicar los cambios</h2><ol><li>Abre este administrador localmente en tu computadora.</li><li>Importa el JSON vigente o crea las casas.</li><li>Guarda los cambios y descarga <b>casas.json</b>.</li><li>Reemplaza <code>data/casas.json</code> en tu repositorio GitHub.</li><li>Sube los archivos del sitio y espera la actualización de GitHub Pages.</li></ol><p><b>Fotografías:</b> se guardan dentro del JSON como imágenes optimizadas. Mantén un tamaño razonable y respalda el archivo; muchas imágenes pueden hacerlo pesado.</p></section></main>
+<script src="js/admin.js"></script></body></html>
