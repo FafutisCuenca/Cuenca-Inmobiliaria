@@ -1,0 +1,29 @@
+[
+  {
+    "id": "INM-0001",
+    "folio": "INM-0001",
+    "estado": "borrador",
+    "titulo": "Casa de ejemplo – reemplaza esta información",
+    "precio": 0,
+    "negociable": true,
+    "descripcion": "Este registro es únicamente un ejemplo para mostrar cómo se organiza una propiedad. Sustituye sus datos y fotografías antes de publicar.",
+    "estadoUbicacion": "Ciudad de México",
+    "municipio": "",
+    "colonia": "",
+    "cp": "",
+    "direccion": "",
+    "terreno": 0,
+    "construccion": 0,
+    "recamaras": 0,
+    "banos": 0,
+    "mediosBanos": 0,
+    "estacionamientos": 0,
+    "niveles": 0,
+    "antiguedad": null,
+    "servicios": [],
+    "entorno": [],
+    "portada": "",
+    "fotos": [],
+    "espacios": []
+  }
+]
