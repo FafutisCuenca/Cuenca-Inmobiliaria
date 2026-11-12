@@ -1,0 +1,12 @@
+const SITE_CONFIG={email:"ljcuenca@yahoo.com",whatsapp:"525520275145",brand:"CUENCA INMOBILIARIA"};
+const money=value=>new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0}).format(Number(value)||0);
+const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function loadHomes(){const r=await fetch("data/casas.json");if(!r.ok)throw new Error("No se pudo cargar casas.json");return r.json()}
+function homeUrl(id){return `casa.html?id=${encodeURIComponent(id)}`}
+function homeCard(p){const img=p.portada||"";return `<article class="property-card"><a href="${homeUrl(p.id)}"><div class="property-image" style="${img?`background-image:url('${img}')`:""}"><span class="status">${esc(p.estado==="vendida"?"Vendida":"En venta")}</span></div><div class="property-info"><h3>${esc(p.titulo)}</h3><div class="muted">${esc([p.colonia,p.municipio,p.estadoUbicacion].filter(Boolean).join(", "))}</div><div class="property-price">${money(p.precio)}</div><div class="property-meta"><span>${p.terreno||"—"} m² terreno</span><span>${p.construccion||"—"} m² construcción</span><span>${p.recamaras||0} recámaras</span><span>${p.banos||0} baños</span></div></div></a></article>`}
+document.querySelectorAll("[data-year]").forEach(x=>x.textContent=new Date().getFullYear());
+const waLink=(message="Hola, me gustaría recibir información sobre sus propiedades.")=>`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(message)}`;
+const emailLink=(subject="Solicitud de información",body="Hola, me gustaría recibir información sobre sus propiedades.")=>`mailto:${SITE_CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+const wa=document.getElementById("contact-whatsapp");if(wa)wa.href=waLink();
+const em=document.getElementById("contact-email");if(em)em.href=emailLink();
+const form=document.getElementById("contact-form");if(form)form.addEventListener("submit",e=>{e.preventDefault();const d=new FormData(form);const msg=[`Hola, mi nombre es ${d.get("nombre")}.`,`Teléfono: ${d.get("telefono")}`,`Correo: ${d.get("correo")||"No proporcionado"}`,`Propiedad: ${d.get("propiedad")||"Consulta general"}`,`Mensaje: ${d.get("mensaje")}`].join("\n");window.open(waLink(msg),"_blank","noopener");});
