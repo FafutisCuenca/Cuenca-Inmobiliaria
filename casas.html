@@ -1,7 +1,79 @@
+
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Casas en venta | CUENCA</title><link rel="stylesheet" href="css/styles.css"></head>
-<body><header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">C</span><span><b>CUENCA</b><small>INMOBILIARIA</small></span></a><nav><a href="index.html">Inicio</a><a class="active" href="casas.html">Casas en venta</a><a href="contacto.html">Contacto</a></nav></header>
-<main class="section page-section"><p class="eyebrow">NUESTRO CATÁLOGO</p><h1>Casas habitación en venta</h1><p class="lead">Consulta las propiedades disponibles y sus características.</p>
-<div class="filters"><label>Buscar por ubicación o descripción<input id="search-text" type="search" placeholder="Ej. Lomas, jardín, Miguel Hidalgo"></label><label>Precio máximo<input id="max-price" type="number" min="0" placeholder="Sin límite"></label><label>Recámaras<select id="bedrooms"><option value="">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option><option value="4">4 o más</option></select></label></div>
-<div id="all-homes" class="property-grid"><p class="muted">Cargando propiedades…</p></div></main>
-<footer class="site-footer"><span>© <span data-year></span> CUENCA INMOBILIARIA</span><span><a href="contacto.html">Contacto</a></span></footer><script src="js/app.js"></script><script src="js/casas.js"></script></body></html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consulta las propiedades disponibles en CUENCA INMOBILIARIA.">
+  <title>Casas en venta | CUENCA</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">C</span>
+      <span>
+        <b>CUENCA</b>
+        <small>INMOBILIARIA</small>
+      </span>
+    </a>
+
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a class="active" href="casas.html">Casas en venta</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="section page-section">
+    <p class="eyebrow">NUESTRO CATÁLOGO</p>
+    <h1>Casas habitación en venta</h1>
+    <p class="lead">Consulta las propiedades disponibles y sus características.</p>
+
+    <div class="filters">
+      <label>
+        Buscar por ubicación o descripción
+        <input
+          id="search-text"
+          type="search"
+          placeholder="Ej. Lomas, jardín, Miguel Hidalgo"
+        >
+      </label>
+
+      <label>
+        Precio máximo
+        <input
+          id="max-price"
+          type="number"
+          min="0"
+          placeholder="Sin límite"
+        >
+      </label>
+
+      <label>
+        Recámaras
+        <select id="bedrooms">
+          <option value="">Cualquiera</option>
+          <option value="1">1 o más</option>
+          <option value="2">2 o más</option>
+          <option value="3">3 o más</option>
+          <option value="4">4 o más</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="all-homes" class="property-grid">
+      <p class="muted">Cargando propiedades…</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>© <span data-year></span> CUENCA INMOBILIARIA</span>
+    <span><a href="contacto.html">Contacto</a></span>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/casas.js"></script>
+</body>
+</html>
