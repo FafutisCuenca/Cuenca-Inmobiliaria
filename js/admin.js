@@ -1,4 +1,3 @@
-
 const $ = s => document.querySelector(s);
 
 let homes = [];
@@ -56,6 +55,7 @@ function normalizePhoto(photo, index) {
     return {
       archivo: photo,
       titulo: `Fotografía ${index + 1}`,
+      principalImpresion: false,
       preview: ""
     };
   }
@@ -64,6 +64,7 @@ function normalizePhoto(photo, index) {
     return {
       archivo: photo.archivo,
       titulo: photo.titulo || `Fotografía ${index + 1}`,
+      principalImpresion: photo.principalImpresion === true,
       preview: ""
     };
   }
@@ -151,7 +152,16 @@ function renderCover() {
 }
 
 function renderPhotos() {
-  $("#photos-list").innerHTML = photos.map((photo, i) => `
+  const selectedCount = photos.filter(photo => photo.principalImpresion).length;
+
+  const summary = `
+    <div class="admin-photo-print-summary">
+      <strong>Fotografías para impresión: ${selectedCount} de 7</strong>
+      <small>La portada se imprime automáticamente. Puedes elegir hasta 7 fotografías adicionales.</small>
+    </div>
+  `;
+
+  const rows = photos.map((photo, i) => `
     <div class="admin-photo-row" data-index="${i}">
       <div class="admin-photo-preview">
         ${photo.preview || photo.archivo
@@ -173,12 +183,19 @@ function renderPhotos() {
           <input type="file" data-file accept="image/*">
         </label>
 
+        <label class="admin-print-photo-option">
+          <input type="checkbox" data-print-photo ${photo.principalImpresion ? "checked" : ""}>
+          Incluir en impresión
+        </label>
+
         <button type="button" class="btn btn-danger btn-small remove-photo">
           Quitar fotografía
         </button>
       </div>
     </div>
   `).join("");
+
+  $("#photos-list").innerHTML = summary + rows;
 
   $("#photos-list").querySelectorAll(".admin-photo-row").forEach(row => {
     const i = Number(row.dataset.index);
@@ -195,12 +212,24 @@ function renderPhotos() {
 
       photos[i].archivo = "img/casas/" + file.name;
       photos[i].preview = URL.createObjectURL(file);
-
       renderPhotos();
 
-      status(
-        `Fotografía seleccionada. Recuerda copiar ${file.name} a img/casas/ y subirla a GitHub.`
-      );
+      status(`Fotografía seleccionada. Recuerda copiar ${file.name} a img/casas/ y subirla a GitHub.`);
+    };
+
+    row.querySelector("[data-print-photo]").onchange = e => {
+      const count = photos.filter(photo => photo.principalImpresion).length;
+
+      if (e.target.checked && count >= 7) {
+        e.target.checked = false;
+        status("Puedes seleccionar como máximo 7 fotografías adicionales. La portada se incluye automáticamente en la impresión.");
+        return;
+      }
+
+      photos[i].principalImpresion = e.target.checked;
+      renderPhotos();
+
+      status(`Selección de impresión actualizada: ${photos.filter(photo => photo.principalImpresion).length} de 7 fotografías adicionales.`);
     };
 
     row.querySelector(".remove-photo").onclick = () => {
@@ -378,7 +407,8 @@ $("#property-form").onsubmit = e => {
       .filter(photo => photo.archivo)
       .map(photo => ({
         archivo: photo.archivo,
-        titulo: photo.titulo || "Fotografía de la propiedad"
+        titulo: photo.titulo || "Fotografía de la propiedad",
+        principalImpresion: photo.principalImpresion === true
       })),
     espacios: spaces
       .filter(s => s.nombre.trim())
