@@ -21,137 +21,175 @@
 <main class="section page-section">
 
   <p class="eyebrow">HERRAMIENTA LOCAL</p>
-  <h1>Administración de casas</h1>
-  <p class="lead">Edita el catálogo en tu computadora y descarga el JSON actualizado. No se guardan datos en un servidor.</p>
+  <h1>Administración de inmuebles</h1>
+  <p class="lead">Administra tu inventario en tu computadora y descarga el JSON actualizado. No se guardan datos en un servidor.</p>
 
   <div class="admin-toolbar">
     <label class="btn btn-outline file-button">
       Importar casas.json
       <input id="import-json" type="file" accept="application/json,.json">
     </label>
-    <button id="new-property" class="btn btn-dark" type="button">＋ Nueva casa</button>
+    <button id="new-property" class="btn btn-dark" type="button">＋ Nuevo inmueble</button>
     <button id="export-json" class="btn btn-outline" type="button">Descargar casas.json</button>
   </div>
 
-  <p id="admin-status" class="notice">Carga tu archivo casas.json o crea una nueva propiedad.</p>
+  <p id="admin-status" class="notice">Carga tu archivo casas.json o crea un nuevo inmueble.</p>
 
   <div class="admin-layout">
 
     <aside class="admin-list">
-      <h2>Propiedades</h2>
+      <h2>Inventario de inmuebles</h2>
       <div id="property-list"></div>
     </aside>
 
     <section class="admin-editor">
-      <h2 id="editor-heading">Editor de propiedad</h2>
+      <h2 id="editor-heading">Editor de inmueble</h2>
 
       <form id="property-form">
         <input type="hidden" name="id">
 
-        <div class="form-grid">
+        <section class="admin-form-section">
+          <h3>Identificación y publicación</h3>
+          <div class="form-grid admin-grid-identification">
 
-          <label>Folio
-            <input name="folio" required placeholder="INM-0001">
-          </label>
+            <label>Folio automático
+              <input name="folio" readonly aria-readonly="true">
+            </label>
 
-          <label>Estado de publicación
-            <select name="estado">
-              <option value="publicada">Publicada</option>
-              <option value="borrador">Borrador</option>
-              <option value="vendida">Vendida</option>
-            </select>
-          </label>
+            <label>Estado de publicación
+              <select name="estado">
+                <option value="publicada">Publicada</option>
+                <option value="borrador">Borrador</option>
+                <option value="vendida">Vendida</option>
+              </select>
+            </label>
 
-          <label class="full">Título comercial
-            <input name="titulo" required placeholder="Casa en venta en…">
-          </label>
+          </div>
+          <p class="admin-field-note">El folio se asigna automáticamente y no es necesario capturarlo.</p>
+        </section>
 
-          <label>Precio (MXN)
-            <input name="precio" type="number" min="0" required>
-          </label>
+        <section class="admin-form-section">
+          <h3>Información comercial</h3>
+          <div class="form-grid">
 
-          <label>Precio negociable
-            <select name="negociable">
-              <option value="true">Sí</option>
-              <option value="false">No</option>
-            </select>
-          </label>
+            <label class="full">Título comercial
+              <input name="titulo" required placeholder="Casa en venta en…">
+            </label>
 
-          <label class="full">Descripción
-            <textarea name="descripcion" rows="4"></textarea>
-          </label>
+            <label>Precio (MXN)
+              <input name="precio" type="number" min="0" required>
+            </label>
 
-          <label>Estado
-            <input name="estadoUbicacion">
-          </label>
+            <label>¿Precio negociable?
+              <select name="negociable">
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+              </select>
+            </label>
 
-          <label>Municipio / alcaldía
-            <input name="municipio">
-          </label>
+          </div>
+        </section>
 
-          <label>Colonia
-            <input name="colonia">
-          </label>
+        <section class="admin-form-section">
+          <h3>Ubicación</h3>
+          <div class="form-grid">
 
-          <label>Código postal
-            <input name="cp">
-          </label>
+            <label>Estado
+              <input name="estadoUbicacion">
+            </label>
 
-          <label class="full">Dirección pública o referencia
-            <input name="direccion">
-          </label>
+            <label>Municipio / alcaldía
+              <input name="municipio">
+            </label>
 
-          <label>Terreno (m²)
-            <input name="terreno" type="number" min="0">
-          </label>
+            <label>Colonia
+              <input name="colonia">
+            </label>
 
-          <label>Construcción (m²)
-            <input name="construccion" type="number" min="0">
-          </label>
+            <label>Código postal
+              <input name="cp">
+            </label>
 
-          <label>Recámaras
-            <input name="recamaras" type="number" min="0">
-          </label>
+            <label class="full">Dirección pública o referencia
+              <input name="direccion">
+            </label>
 
-          <label>Baños completos
-            <input name="banos" type="number" min="0">
-          </label>
+          </div>
+        </section>
 
-          <label>Medios baños
-            <input name="mediosBanos" type="number" min="0">
-          </label>
+        <section class="admin-form-section">
+          <h3>Características del inmueble</h3>
+          <div class="form-grid">
 
-          <label>Estacionamientos
-            <input name="estacionamientos" type="number" min="0">
-          </label>
+            <label>Terreno (m²)
+              <input name="terreno" type="number" min="0">
+            </label>
 
-          <label>Niveles
-            <input name="niveles" type="number" min="0">
-          </label>
+            <label>Construcción (m²)
+              <input name="construccion" type="number" min="0">
+            </label>
 
-          <label>Antigüedad (años)
-            <input name="antiguedad" type="number" min="0">
-          </label>
+            <label>Niveles
+              <input name="niveles" type="number" min="0">
+            </label>
 
-          <label class="full">Servicios y equipamiento (separados por coma)
-            <input name="servicios" placeholder="Cisterna, gas estacionario, cocina integral">
-          </label>
+            <label>Antigüedad (años)
+              <input name="antiguedad" type="number" min="0">
+            </label>
 
-          <label class="full">Entorno y comercios cercanos (separados por coma)
-            <input name="entorno" placeholder="Plaza comercial, escuelas, parques">
-          </label>
+            <label>Recámaras
+              <input name="recamaras" type="number" min="0">
+            </label>
 
-          <label class="full">Fotografía de portada
-            <input name="portada" type="file" accept="image/*">
-          </label>
+            <label>Baños completos
+              <input name="banos" type="number" min="0">
+            </label>
 
-          <label class="full">Título de la portada
-            <input name="portadaTitulo" placeholder="Ej. Fachada principal">
-          </label>
+            <label>Medios baños
+              <input name="mediosBanos" type="number" min="0">
+            </label>
 
-        </div>
+            <label>Estacionamientos
+              <input name="estacionamientos" type="number" min="0">
+            </label>
 
-        <div class="photo-preview" id="cover-preview"></div>
+          </div>
+        </section>
+
+        <section class="admin-form-section">
+          <h3>Descripción y entorno</h3>
+          <div class="form-grid">
+
+            <label class="full">Descripción comercial
+              <textarea name="descripcion" rows="4"></textarea>
+            </label>
+
+            <label class="full">Servicios y equipamiento (separados por coma)
+              <input name="servicios" placeholder="Cisterna, gas estacionario, cocina integral">
+            </label>
+
+            <label class="full">Entorno y comercios cercanos (separados por coma)
+              <input name="entorno" placeholder="Plaza comercial, escuelas, parques">
+            </label>
+
+          </div>
+        </section>
+
+        <section class="admin-form-section">
+          <h3>Fotografía de portada</h3>
+          <div class="form-grid">
+
+            <label class="full">Seleccionar fotografía
+              <input name="portada" type="file" accept="image/*">
+            </label>
+
+            <label class="full">Título de la portada
+              <input name="portadaTitulo" placeholder="Ej. Fachada principal">
+            </label>
+
+          </div>
+          <div class="photo-preview" id="cover-preview"></div>
+        </section>
 
         <section class="gallery-editor">
           <div class="space-head">
@@ -168,6 +206,7 @@
           <div id="photos-list"></div>
         </section>
 
+        <!-- Se conserva sin cambios la sección de espacios adicionales -->
         <section class="spaces-editor">
           <div class="space-head">
             <h3>Espacios de la casa</h3>
@@ -184,8 +223,8 @@
         </section>
 
         <div class="form-actions">
-          <button class="btn btn-dark" type="submit">Guardar propiedad</button>
-          <button id="delete-property" class="btn btn-danger" type="button">Eliminar propiedad</button>
+          <button class="btn btn-dark" type="submit">Guardar inmueble</button>
+          <button id="delete-property" class="btn btn-danger" type="button">Eliminar inmueble</button>
         </div>
 
       </form>
@@ -196,7 +235,7 @@
     <h2>Cómo publicar los cambios</h2>
     <ol>
       <li>Abre este administrador localmente en tu computadora.</li>
-      <li>Importa el JSON vigente o crea una nueva propiedad.</li>
+      <li>Importa el JSON vigente o crea un nuevo inmueble.</li>
       <li>Agrega las fotografías y sus títulos.</li>
       <li>Copia los archivos de imagen a la carpeta <code>img/casas/</code>.</li>
       <li>Guarda los cambios y descarga <code>casas.json</code>.</li>
