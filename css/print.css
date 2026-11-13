@@ -1,8 +1,7 @@
-
 /* ==========================================
    CUENCA INMOBILIARIA
-   FICHA COMERCIAL PARA IMPRESIÓN
-   Formato: carta, una página como objetivo
+   FICHA COMERCIAL Y GALERÍA PARA IMPRESIÓN
+   Formato: carta
 ========================================== */
 
 @page {
@@ -11,10 +10,9 @@
 }
 
 @media print {
-
   html,
   body {
-    width: 100%;
+    width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #fff !important;
@@ -24,7 +22,6 @@
     line-height: 1.3 !important;
   }
 
-  /* Ocultar navegación y elementos innecesarios */
   .site-header,
   .site-footer,
   .detail-aside > *,
@@ -38,7 +35,6 @@
     display: none !important;
   }
 
-  /* Área general */
   .section,
   .page-section,
   #property-detail {
@@ -48,7 +44,6 @@
     padding: 0 !important;
   }
 
-  /* Folio y encabezado */
   .eyebrow {
     margin: 0 0 3mm !important;
     font-size: 7pt !important;
@@ -71,7 +66,6 @@
     font-size: 8pt !important;
   }
 
-  /* Precio */
   .property-price-banner {
     display: flex !important;
     justify-content: space-between !important;
@@ -96,7 +90,6 @@
     font-size: 8pt !important;
   }
 
-  /* Fotografía principal */
   .property-detail-hero {
     display: block !important;
     height: auto !important;
@@ -129,7 +122,6 @@
     text-align: right !important;
   }
 
-  /* Características principales */
   .detail-summary {
     margin: 3mm 0 !important;
     padding: 2mm 0 !important;
@@ -173,7 +165,6 @@
     font-size: 7pt !important;
   }
 
-  /* Descripción y datos complementarios */
   .detail-columns {
     display: block !important;
     margin: 2mm 0 0 !important;
@@ -201,7 +192,6 @@
     line-height: 1.3 !important;
   }
 
-  /* Datos del asesor */
   .detail-aside {
     display: block !important;
     margin: 3mm 0 0 !important;
@@ -214,11 +204,10 @@
 
   .detail-aside::after {
     content:
-      "INFORMES Y CITAS - "
-      "Asesor: Ing. Jorge Cuenca "
-      "WhatsApp: 55 2027 5145  |  Correo: ljcuenca@yahoo.com "
+      "INFORMES Y CITAS\A"
+      "Asesor: Ing. Jorge Cuenca\A"
+      "WhatsApp: 55 2027 5145  |  Correo: ljcuenca@yahoo.com\A"
       "CUENCA INMOBILIARIA";
-
     display: block !important;
     white-space: pre-line !important;
     font-size: 8pt !important;
@@ -226,7 +215,57 @@
     color: #19364c !important;
   }
 
-  /* Evitar cortes innecesarios */
+  /* Galería exclusiva de impresión:
+     solo fotografías marcadas en administración. */
+
+  .print-photo-gallery {
+    display: block !important;
+    break-before: page !important;
+    page-break-before: always !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-photo-gallery h2 {
+    margin: 0 0 5mm !important;
+    padding: 0 0 2mm !important;
+    border-bottom: 1px solid #b89b68 !important;
+    color: #19364c !important;
+    font-size: 16pt !important;
+  }
+
+  .print-photo-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6mm !important;
+    align-items: start !important;
+  }
+
+  .print-photo-item {
+    display: block !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-photo-item img {
+    display: block !important;
+    width: 100% !important;
+    height: 48mm !important;
+    object-fit: cover !important;
+    break-inside: avoid !important;
+  }
+
+  .print-photo-item figcaption {
+    margin: 1.5mm 0 0 !important;
+    color: #333 !important;
+    font-size: 8pt !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
+  }
+
   img {
     break-inside: avoid !important;
   }
@@ -234,5 +273,4 @@
   * {
     box-shadow: none !important;
   }
-
 }
