@@ -214,9 +214,9 @@
 
   .detail-aside::after {
     content:
-      "INFORMES Y CITAS\\A"
-      "Asesor: Ing. Jorge Cuenca\\A"
-      "WhatsApp: 55 2027 5145  |  Correo: ljcuenca@yahoo.com\\A"
+      "INFORMES Y CITAS - "
+      "Asesor: Ing. Jorge Cuenca "
+      "WhatsApp: 55 2027 5145  |  Correo: ljcuenca@yahoo.com "
       "CUENCA INMOBILIARIA";
 
     display: block !important;
