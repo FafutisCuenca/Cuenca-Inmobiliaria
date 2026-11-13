@@ -78,6 +78,17 @@
         "principalImpresion": true
       }
     ],
-    "espacios": []
+    "espacios": [
+      {
+        "nombre": "Estacionamiento",
+        "descripcion": "Estacionamiento hasta para 6 autos en área cubierta.",
+        "foto": "img/casas/Estacionamiento - Sotano.jpeg"
+      },
+      {
+        "nombre": "Cocina",
+        "descripcion": "Vista de la cocina, espacio de fregadero y lavavajilla (incluida)",
+        "foto": "img/casas/Cocina-Fregadero-Lavavajillas.jpeg"
+      }
+    ]
   }
 ]
