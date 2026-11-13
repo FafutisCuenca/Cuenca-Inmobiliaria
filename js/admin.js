@@ -3,6 +3,8 @@ const $ = s => document.querySelector(s);
 
 let homes = [];
 let currentId = null;
+let isNewProperty = false;
+
 let coverData = "";
 let coverPreview = "";
 let spaces = [];
@@ -101,6 +103,40 @@ function normalizePhoto(photo, index) {
 }
 
 /* =====================================================
+   NAVEGACIÓN ENTRE INVENTARIO Y EDITOR
+   ===================================================== */
+
+function showInventory() {
+  $("#admin-inventory-view").hidden = false;
+  $("#admin-editor-view").hidden = true;
+}
+
+function showEditor() {
+  $("#admin-inventory-view").hidden = true;
+  $("#admin-editor-view").hidden = false;
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function backToInventory() {
+  // Si era un inmueble nuevo y no se guardó, se descarta.
+  if (isNewProperty) {
+    currentId = null;
+    isNewProperty = false;
+  }
+
+  renderList();
+  showInventory();
+
+  status("Inventario de inmuebles. Selecciona una propiedad para editarla.");
+}
+
+$("#back-to-inventory").onclick = backToInventory;
+
+/* =====================================================
    INVENTARIO DE INMUEBLES
    ===================================================== */
 
@@ -109,13 +145,19 @@ function renderList() {
   if (!box) return;
 
   if (!homes.length) {
-    box.innerHTML = "<p class='muted'>Aún no hay inmuebles en el inventario.</p>";
+    box.innerHTML = `
+      <p class="muted">
+        Aún no hay inmuebles en el inventario.
+        Puedes importar casas.json o crear un nuevo inmueble.
+      </p>
+    `;
     return;
   }
 
   box.innerHTML = homes.map(p => {
     const cover = p.portada || "";
     const selected = p.id === currentId;
+
     const location = [
       p.colonia,
       p.municipio,
@@ -141,7 +183,10 @@ function renderList() {
 
         <span class="admin-property-content">
           <span class="admin-property-topline">
-            <strong class="admin-property-folio">${escapeHtml(p.folio || "Sin folio")}</strong>
+            <strong class="admin-property-folio">
+              ${escapeHtml(p.folio || "Sin folio")}
+            </strong>
+
             <span class="admin-property-status status-${escapeHtml(statusLabel)}">
               ${escapeHtml(statusLabel)}
             </span>
@@ -159,7 +204,9 @@ function renderList() {
             ${escapeHtml(location || "Ubicación pendiente")}
           </span>
 
-          <span class="admin-property-action">Editar inmueble →</span>
+          <span class="admin-property-action">
+            Editar inmueble →
+          </span>
         </span>
       </button>
     `;
@@ -174,15 +221,17 @@ function renderList() {
    SELECCIONAR INMUEBLE
    ===================================================== */
 
-function selectProperty(id) {
-  const p = homes.find(x => x.id === id);
+function selectProperty(id, draft = null) {
+  const p = draft || homes.find(x => x.id === id);
   if (!p) return;
 
   currentId = id;
+
   coverData = p.portada || "";
   coverPreview = "";
 
   spaces = structuredClone(p.espacios || []);
+
   photos = (p.fotos || [])
     .map(normalizePhoto)
     .filter(Boolean);
@@ -229,7 +278,10 @@ function selectProperty(id) {
   renderList();
 
   $("#editor-heading").textContent =
-    "Editar " + (p.folio || "inmueble");
+    (isNewProperty ? "Nuevo inmueble · " : "Editar inmueble · ") +
+    (p.folio || "Sin folio");
+
+  showEditor();
 }
 
 /* =====================================================
@@ -462,23 +514,21 @@ $("#import-json").onchange = async e => {
     }
 
     homes = parsed;
-    currentId = homes[0]?.id || null;
+    currentId = null;
+    isNewProperty = false;
 
     renderList();
-
-    if (currentId) {
-      selectProperty(currentId);
-    } else {
-      resetForm();
-    }
+    showInventory();
 
     status(
-      "Catálogo importado correctamente. Recuerda descargar el JSON al terminar."
+      "Catálogo importado correctamente. Selecciona un inmueble para editarlo."
     );
 
   } catch (err) {
     status("No se pudo importar: " + err.message);
   }
+
+  e.target.value = "";
 };
 
 /* =====================================================
@@ -488,15 +538,17 @@ $("#import-json").onchange = async e => {
 function resetForm() {
   const p = blank();
 
+  // El inmueble nuevo todavía no se agrega al inventario.
+  // Se incorpora al arreglo homes únicamente al guardarlo.
   currentId = p.id;
-  homes.push(p);
+  isNewProperty = true;
 
-  selectProperty(p.id);
+  selectProperty(p.id, p);
 
-  $("#editor-heading").textContent = "Nuevo inmueble";
+  $("#editor-heading").textContent = "Nuevo inmueble · " + p.folio;
 
   status(
-    `Nuevo inmueble creado con el folio ${p.folio}. Completa sus datos y guarda.`
+    `Nuevo inmueble iniciado con el folio ${p.folio}. Completa sus datos y guarda para incorporarlo al inventario.`
   );
 }
 
@@ -607,13 +659,14 @@ $("#property-form").onsubmit = e => {
     homes.push(p);
   }
 
-  currentId = p.id;
+  currentId = null;
+  isNewProperty = false;
 
   renderList();
-  selectProperty(p.id);
+  showInventory();
 
   status(
-    `Inmueble ${p.folio} guardado en esta sesión. Descarga casas.json para conservar los cambios.`
+    `Inmueble ${p.folio} guardado correctamente en esta sesión. El inventario está actualizado. Descarga casas.json al terminar para conservar los cambios.`
   );
 };
 
@@ -624,32 +677,32 @@ $("#property-form").onsubmit = e => {
 $("#delete-property").onclick = () => {
   if (!currentId) return;
 
-  if (!confirm("¿Eliminar este inmueble del catálogo local?")) return;
+  if (isNewProperty) {
+    if (!confirm("¿Cancelar la creación de este inmueble?")) return;
 
-  homes = homes.filter(p => p.id !== currentId);
-  currentId = homes[0]?.id || null;
+    currentId = null;
+    isNewProperty = false;
 
-  renderList();
+    renderList();
+    showInventory();
 
-  if (currentId) {
-    selectProperty(currentId);
-  } else {
-    $("#property-form").reset();
-
-    spaces = [];
-    photos = [];
-    coverData = "";
-    coverPreview = "";
-
-    $("#spaces-list").innerHTML = "";
-    $("#photos-list").innerHTML = "";
-    $("#cover-preview").innerHTML = "";
-
-    $("#editor-heading").textContent = "Inventario vacío";
+    status("Se canceló la creación del nuevo inmueble.");
+    return;
   }
 
+  if (!confirm("¿Eliminar este inmueble del catálogo local?")) return;
+
+  const deleted = homes.find(p => p.id === currentId);
+  homes = homes.filter(p => p.id !== currentId);
+
+  currentId = null;
+  isNewProperty = false;
+
+  renderList();
+  showInventory();
+
   status(
-    "Inmueble eliminado de la sesión. Descarga el JSON para conservar el cambio."
+    `Inmueble ${deleted?.folio || ""} eliminado de esta sesión. Descarga el JSON para conservar el cambio.`
   );
 };
 
@@ -672,7 +725,9 @@ $("#export-json").onclick = () => {
 
   URL.revokeObjectURL(url);
 
-  status("Se descargó casas.json.");
+  status(
+    "Se descargó casas.json con los inmuebles guardados en esta sesión."
+  );
 };
 
 /* =====================================================
@@ -685,20 +740,30 @@ fetch("data/casas.json")
     return r.json();
   })
   .then(data => {
-    homes = data;
-    renderList();
-
-    if (homes[0]) {
-      selectProperty(homes[0].id);
-    } else {
-      resetForm();
+    if (!Array.isArray(data)) {
+      throw new Error("El archivo no contiene un catálogo válido.");
     }
+
+    homes = data;
+    currentId = null;
+    isNewProperty = false;
+
+    renderList();
+    showInventory();
+
+    status(
+      `Inventario cargado correctamente: ${homes.length} inmueble(s). Selecciona uno para editarlo.`
+    );
   })
   .catch(() => {
     homes = [];
+    currentId = null;
+    isNewProperty = false;
+
     renderList();
+    showInventory();
 
     status(
-      "No se pudo cargar automáticamente. Usa Importar casas.json o Nueva casa."
+      "No se pudo cargar automáticamente. Usa Importar casas.json o Nuevo inmueble."
     );
   });
