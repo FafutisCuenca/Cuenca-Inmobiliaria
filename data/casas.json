@@ -65,22 +65,17 @@
       {
         "archivo": "img/casas/Estancia-Sala.jpeg",
         "titulo": "Estancia Principal",
-        "principalImpresion": false
+        "principalImpresion": true
       },
       {
         "archivo": "img/casas/Estancia-Escaleras.jpeg",
         "titulo": "Zona de Escaleras (sube a recamaras / baja a estacionamiento, cuarto de servicio y lavado)",
-        "principalImpresion": false
-      },
-      {
-        "archivo": "img/casas/Sala.jpeg",
-        "titulo": "Sala",
-        "principalImpresion": false
+        "principalImpresion": true
       },
       {
         "archivo": "img/casas/Salita.jpeg",
         "titulo": "Espacio en Entrada Principal - Recibidor",
-        "principalImpresion": false
+        "principalImpresion": true
       }
     ],
     "espacios": []
