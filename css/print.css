@@ -1,1 +1,238 @@
-@media print{.site-header nav,.site-footer,.detail-aside,.btn,.text-link{display:none!important}.section{padding:10px}.property-detail-hero{height:260px}.detail-columns{display:block}.detail-header h1{font-size:28px}.space-card{break-inside:avoid}.detail-section{break-inside:avoid}body{color:#111}}
+
+/* ==========================================
+   CUENCA INMOBILIARIA
+   FICHA COMERCIAL PARA IMPRESIÓN
+   Formato: carta, una página como objetivo
+========================================== */
+
+@page {
+  size: letter;
+  margin: 10mm;
+}
+
+@media print {
+
+  html,
+  body {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #222 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 9pt !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Ocultar navegación y elementos innecesarios */
+  .site-header,
+  .site-footer,
+  .detail-aside > *,
+  .btn,
+  .text-link,
+  .photo-open-hint,
+  .photo-gallery-section,
+  .space-grid,
+  .detail-columns .detail-section:has(.space-grid),
+  .detail-columns .detail-section:has(.spec-grid) {
+    display: none !important;
+  }
+
+  /* Área general */
+  .section,
+  .page-section,
+  #property-detail {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Folio y encabezado */
+  .eyebrow {
+    margin: 0 0 3mm !important;
+    font-size: 7pt !important;
+    letter-spacing: 1px !important;
+  }
+
+  .detail-header {
+    margin: 0 0 3mm !important;
+  }
+
+  .detail-header h1 {
+    margin: 0 0 1mm !important;
+    font-size: 19pt !important;
+    line-height: 1.15 !important;
+    color: #19364c !important;
+  }
+
+  .detail-header p {
+    margin: 0 !important;
+    font-size: 8pt !important;
+  }
+
+  /* Precio */
+  .property-price-banner {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin: 3mm 0 !important;
+    padding: 3mm 5mm !important;
+    background: #19364c !important;
+    color: #fff !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .property-price-banner div span {
+    font-size: 7pt !important;
+  }
+
+  .property-price-banner strong {
+    font-size: 17pt !important;
+  }
+
+  .price-condition {
+    font-size: 8pt !important;
+  }
+
+  /* Fotografía principal */
+  .property-detail-hero {
+    display: block !important;
+    height: auto !important;
+    margin: 3mm 0 !important;
+  }
+
+  .detail-main-photo {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .detail-photo-button {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .detail-photo-button img,
+  .detail-main-photo img {
+    display: block !important;
+    width: 100% !important;
+    height: 76mm !important;
+    object-fit: cover !important;
+  }
+
+  .main-photo-caption {
+    margin: 1mm 0 0 !important;
+    font-size: 7pt !important;
+    text-align: right !important;
+  }
+
+  /* Características principales */
+  .detail-summary {
+    margin: 3mm 0 !important;
+    padding: 2mm 0 !important;
+    border-bottom: 1px solid #ccc !important;
+  }
+
+  .detail-summary h2 {
+    margin: 0 0 2mm !important;
+    font-size: 12pt !important;
+    color: #19364c !important;
+  }
+
+  .detail-summary-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 2mm !important;
+    margin: 0 !important;
+  }
+
+  .detail-summary-grid .spec {
+    display: flex !important;
+    min-height: 0 !important;
+    padding: 2mm !important;
+    gap: 1mm !important;
+    background: #f4f5f5 !important;
+    border: 0 !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .detail-summary-grid .detail-spec-icon {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .detail-summary-grid .spec b {
+    font-size: 10pt !important;
+  }
+
+  .detail-summary-grid .spec span {
+    font-size: 7pt !important;
+  }
+
+  /* Descripción y datos complementarios */
+  .detail-columns {
+    display: block !important;
+    margin: 2mm 0 0 !important;
+  }
+
+  .detail-columns > div {
+    width: 100% !important;
+  }
+
+  .detail-section {
+    margin: 2mm 0 !important;
+    padding: 0 !important;
+    break-inside: avoid !important;
+  }
+
+  .detail-section h2 {
+    margin: 0 0 1mm !important;
+    font-size: 11pt !important;
+    color: #19364c !important;
+  }
+
+  .detail-section p {
+    margin: 0 !important;
+    font-size: 8pt !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Datos del asesor */
+  .detail-aside {
+    display: block !important;
+    margin: 3mm 0 0 !important;
+    padding: 3mm 0 0 !important;
+    border-top: 1px solid #b89b68 !important;
+    background: transparent !important;
+    color: #222 !important;
+    break-inside: avoid !important;
+  }
+
+  .detail-aside::after {
+    content:
+      "INFORMES Y CITAS\\A"
+      "Asesor: Ing. Jorge Cuenca\\A"
+      "WhatsApp: 55 2027 5145  |  Correo: ljcuenca@yahoo.com\\A"
+      "CUENCA INMOBILIARIA";
+
+    display: block !important;
+    white-space: pre-line !important;
+    font-size: 8pt !important;
+    line-height: 1.5 !important;
+    color: #19364c !important;
+  }
+
+  /* Evitar cortes innecesarios */
+  img {
+    break-inside: avoid !important;
+  }
+
+  * {
+    box-shadow: none !important;
+  }
+
+}
