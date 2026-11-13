@@ -52,6 +52,17 @@
     ].filter(Boolean).join("");
   }
 
+function summarySpecifications(p) {
+  return [
+    specification("Terreno", p.terreno, "m²", "ruler"),
+    specification("Construcción", p.construccion, "m²", "ruler"),
+    specification("Recámaras", p.recamaras, "", "bed"),
+    specification("Baños", p.banos, "", "bath"),
+    specification("Estacionamientos", p.estacionamientos, "", "car"),
+    specification("Niveles", p.niveles, "", "layers")
+  ].filter(Boolean).join("");
+}
+  
   // Admite tanto el formato nuevo como las fotografías antiguas.
   function normalizePhoto(photo, index) {
     if (typeof photo === "string") {
@@ -194,13 +205,22 @@
       root.innerHTML = `
         <p class="eyebrow">${esc(p.folio)} · CASA HABITACIÓN EN VENTA</p>
 
-        <div class="detail-header">
-          <div>
-            <h1>${esc(p.titulo)}</h1>
-            <p class="muted">${esc(locationText)}</p>
-          </div>
-          <div class="detail-price">${money(p.precio)}</div>
-        </div>
+<div class="detail-header">
+  <div>
+    <h1>${esc(p.titulo)}</h1>
+    <p class="muted">${esc(locationText)}</p>
+  </div>
+</div>
+
+<div class="property-price-banner">
+  <div>
+    <span>PRECIO DE VENTA</span>
+    <strong>${money(p.precio)}</strong>
+  </div>
+  <span class="price-condition">
+    ${p.negociable ? "Precio negociable" : "Precio fijo"}
+  </span>
+</div>
 
         <div class="property-detail-hero">
           <div class="detail-main-photo">
@@ -215,7 +235,12 @@
             }
           </div>
         </div>
-
+<section class="detail-summary">
+  <h2>Características principales</h2>
+  <div class="spec-grid detail-summary-grid">
+    ${summarySpecifications(p)}
+  </div>
+</section>
         ${
           photos.length
             ? `<section class="detail-section photo-gallery-section">
@@ -247,7 +272,7 @@
             </section>
 
             <section class="detail-section">
-              <h2>Características</h2>
+              <h2>Detalle de características</h2>
               <div class="spec-grid">
                 ${specifications(p)}
               </div>
