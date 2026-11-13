@@ -1,4 +1,3 @@
-
 (() => {
   const root = document.getElementById("property-detail");
 
@@ -52,17 +51,17 @@
     ].filter(Boolean).join("");
   }
 
-function summarySpecifications(p) {
-  return [
-    specification("Terreno", p.terreno, "m²", "ruler"),
-    specification("Construcción", p.construccion, "m²", "ruler"),
-    specification("Recámaras", p.recamaras, "", "bed"),
-    specification("Baños", p.banos, "", "bath"),
-    specification("Estacionamientos", p.estacionamientos, "", "car"),
-    specification("Niveles", p.niveles, "", "layers")
-  ].filter(Boolean).join("");
-}
-  
+  function summarySpecifications(p) {
+    return [
+      specification("Terreno", p.terreno, "m²", "ruler"),
+      specification("Construcción", p.construccion, "m²", "ruler"),
+      specification("Recámaras", p.recamaras, "", "bed"),
+      specification("Baños", p.banos, "", "bath"),
+      specification("Estacionamientos", p.estacionamientos, "", "car"),
+      specification("Niveles", p.niveles, "", "layers")
+    ].filter(Boolean).join("");
+  }
+
   // Admite tanto el formato nuevo como las fotografías antiguas.
   function normalizePhoto(photo, index) {
     if (typeof photo === "string") {
@@ -75,7 +74,8 @@ function summarySpecifications(p) {
     if (photo && typeof photo === "object" && photo.archivo) {
       return {
         archivo: photo.archivo,
-        titulo: photo.titulo || `Fotografía ${index + 1}`
+        titulo: photo.titulo || `Fotografía ${index + 1}`,
+        principalImpresion: photo.principalImpresion === true
       };
     }
 
@@ -205,22 +205,22 @@ function summarySpecifications(p) {
       root.innerHTML = `
         <p class="eyebrow">${esc(p.folio)} · CASA HABITACIÓN EN VENTA</p>
 
-<div class="detail-header">
-  <div>
-    <h1>${esc(p.titulo)}</h1>
-    <p class="muted">${esc(locationText)}</p>
-  </div>
-</div>
+        <div class="detail-header">
+          <div>
+            <h1>${esc(p.titulo)}</h1>
+            <p class="muted">${esc(locationText)}</p>
+          </div>
+        </div>
 
-<div class="property-price-banner">
-  <div>
-    <span>PRECIO DE VENTA</span>
-    <strong>${money(p.precio)}</strong>
-  </div>
-  <span class="price-condition">
-    ${p.negociable ? "Precio negociable" : "Precio fijo"}
-  </span>
-</div>
+        <div class="property-price-banner">
+          <div>
+            <span>PRECIO DE VENTA</span>
+            <strong>${money(p.precio)}</strong>
+          </div>
+          <span class="price-condition">
+            ${p.negociable ? "Precio negociable" : "Precio fijo"}
+          </span>
+        </div>
 
         <div class="property-detail-hero">
           <div class="detail-main-photo">
@@ -235,12 +235,14 @@ function summarySpecifications(p) {
             }
           </div>
         </div>
-<section class="detail-summary">
-  <h2>Características principales</h2>
-  <div class="spec-grid detail-summary-grid">
-    ${summarySpecifications(p)}
-  </div>
-</section>
+
+        <section class="detail-summary">
+          <h2>Características principales</h2>
+          <div class="spec-grid detail-summary-grid">
+            ${summarySpecifications(p)}
+          </div>
+        </section>
+
         ${
           photos.length
             ? `<section class="detail-section photo-gallery-section">
@@ -353,6 +355,28 @@ function summarySpecifications(p) {
           </aside>
         </div>
       `;
+
+      // Se incluyen únicamente las fotografías marcadas desde administración.
+      // La portada ya aparece en la primera página de la ficha.
+      const printPhotos = photos
+        .filter(photo => photo.principalImpresion === true)
+        .slice(0, 7);
+
+      const printGallery = printPhotos.length
+        ? `<section class="print-photo-gallery" style="display:none">
+             <h2>Galería fotográfica</h2>
+             <div class="print-photo-grid">
+               ${printPhotos.map(photo => `
+                 <figure class="print-photo-item">
+                   <img src="${esc(photo.archivo)}" alt="${esc(photo.titulo)}">
+                   <figcaption>${esc(photo.titulo)}</figcaption>
+                 </figure>
+               `).join("")}
+             </div>
+           </section>`
+        : "";
+
+      root.insertAdjacentHTML("beforeend", printGallery);
 
       bindPhotoButtons();
       document.title = p.titulo + " | CUENCA";
