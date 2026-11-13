@@ -1,3 +1,4 @@
+
 const $ = s => document.querySelector(s);
 
 let homes = [];
@@ -7,9 +8,24 @@ let coverPreview = "";
 let spaces = [];
 let photos = [];
 
+/* =====================================================
+   UTILIDADES
+   ===================================================== */
+
+function nextFolio() {
+  const highest = homes.reduce((max, home) => {
+    const match = String(home.folio || "").match(/^INM-(\d+)$/i);
+    return match ? Math.max(max, Number(match[1])) : max;
+  }, 0);
+
+  return "INM-" + String(highest + 1).padStart(4, "0");
+}
+
 const blank = () => ({
-  id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-  folio: "INM-" + String(homes.length + 1).padStart(4, "0"),
+  id: crypto.randomUUID
+    ? crypto.randomUUID()
+    : String(Date.now()) + Math.random().toString(16).slice(2),
+  folio: nextFolio(),
   estado: "borrador",
   titulo: "",
   precio: "",
@@ -37,7 +53,8 @@ const blank = () => ({
 });
 
 function status(t) {
-  $("#admin-status").textContent = t;
+  const element = $("#admin-status");
+  if (element) element.textContent = t;
 }
 
 function escapeHtml(s) {
@@ -48,6 +65,17 @@ function escapeHtml(s) {
     '"': "&quot;",
     "'": "&#39;"
   }[c]));
+}
+
+function formatPrice(value) {
+  const price = Number(value);
+  if (!Number.isFinite(price) || price <= 0) return "Precio por definir";
+
+  return price.toLocaleString("es-MX", {
+    style: "currency",
+    currency: "MXN",
+    maximumFractionDigits: 0
+  });
 }
 
 function normalizePhoto(photo, index) {
@@ -72,22 +100,79 @@ function normalizePhoto(photo, index) {
   return null;
 }
 
+/* =====================================================
+   INVENTARIO DE INMUEBLES
+   ===================================================== */
+
 function renderList() {
   const box = $("#property-list");
+  if (!box) return;
 
-  box.innerHTML = homes.length
-    ? homes.map(p => `
-        <button class="admin-property ${p.id === currentId ? "active" : ""}" data-id="${escapeHtml(p.id)}">
-          ${escapeHtml(p.titulo || "Nueva propiedad")}
-          <small>${escapeHtml(p.folio)} · ${escapeHtml(p.estado)}</small>
-        </button>
-      `).join("")
-    : "<p class='muted'>Aún no hay propiedades.</p>";
+  if (!homes.length) {
+    box.innerHTML = "<p class='muted'>Aún no hay inmuebles en el inventario.</p>";
+    return;
+  }
 
-  box.querySelectorAll("button").forEach(b => {
-    b.onclick = () => selectProperty(b.dataset.id);
+  box.innerHTML = homes.map(p => {
+    const cover = p.portada || "";
+    const selected = p.id === currentId;
+    const location = [
+      p.colonia,
+      p.municipio,
+      p.estadoUbicacion
+    ].filter(Boolean).join(", ");
+
+    const statusLabel = p.estado || "borrador";
+
+    return `
+      <button
+        type="button"
+        class="admin-property ${selected ? "active" : ""}"
+        data-id="${escapeHtml(p.id)}"
+        aria-label="Editar ${escapeHtml(p.folio || "inmueble")}"
+      >
+        <span class="admin-property-image">
+          ${
+            cover
+              ? `<img src="${escapeHtml(cover)}" alt="Fotografía de ${escapeHtml(p.titulo || "inmueble")}">`
+              : `<span class="admin-property-no-image">Sin fotografía</span>`
+          }
+        </span>
+
+        <span class="admin-property-content">
+          <span class="admin-property-topline">
+            <strong class="admin-property-folio">${escapeHtml(p.folio || "Sin folio")}</strong>
+            <span class="admin-property-status status-${escapeHtml(statusLabel)}">
+              ${escapeHtml(statusLabel)}
+            </span>
+          </span>
+
+          <span class="admin-property-title">
+            ${escapeHtml(p.titulo || "Inmueble sin título")}
+          </span>
+
+          <span class="admin-property-price">
+            ${escapeHtml(formatPrice(p.precio))}
+          </span>
+
+          <span class="admin-property-location">
+            ${escapeHtml(location || "Ubicación pendiente")}
+          </span>
+
+          <span class="admin-property-action">Editar inmueble →</span>
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  box.querySelectorAll(".admin-property").forEach(button => {
+    button.onclick = () => selectProperty(button.dataset.id);
   });
 }
+
+/* =====================================================
+   SELECCIONAR INMUEBLE
+   ===================================================== */
 
 function selectProperty(id) {
   const p = homes.find(x => x.id === id);
@@ -96,6 +181,7 @@ function selectProperty(id) {
   currentId = id;
   coverData = p.portada || "";
   coverPreview = "";
+
   spaces = structuredClone(p.espacios || []);
   photos = (p.fotos || [])
     .map(normalizePhoto)
@@ -129,8 +215,10 @@ function selectProperty(id) {
     portadaTitulo: p.portadaTitulo || "Fachada principal"
   };
 
-  Object.entries(values).forEach(([k, v]) => {
-    if (f.elements[k]) f.elements[k].value = v ?? "";
+  Object.entries(values).forEach(([key, value]) => {
+    if (f.elements[key]) {
+      f.elements[key].value = value ?? "";
+    }
   });
 
   f.elements.portada.value = "";
@@ -140,53 +228,83 @@ function selectProperty(id) {
   renderSpaces();
   renderList();
 
-  $("#editor-heading").textContent = "Editar " + (p.folio || "propiedad");
+  $("#editor-heading").textContent =
+    "Editar " + (p.folio || "inmueble");
 }
+
+/* =====================================================
+   FOTOGRAFÍA DE PORTADA
+   ===================================================== */
 
 function renderCover() {
   const preview = coverPreview || coverData;
+  const element = $("#cover-preview");
 
-  $("#cover-preview").innerHTML = preview
-    ? `<img src="${escapeHtml(preview)}" alt="Portada actual">`
+  if (!element) return;
+
+  element.innerHTML = preview
+    ? `<img src="${escapeHtml(preview)}" alt="Fotografía de portada">`
     : "";
 }
 
+/* =====================================================
+   GALERÍA DE FOTOGRAFÍAS
+   ===================================================== */
+
 function renderPhotos() {
-  const selectedCount = photos.filter(photo => photo.principalImpresion).length;
+  const selectedCount = photos.filter(
+    photo => photo.principalImpresion
+  ).length;
 
   const summary = `
     <div class="admin-photo-print-summary">
       <strong>Fotografías para impresión: ${selectedCount} de 7</strong>
-      <small>La portada se imprime automáticamente. Puedes elegir hasta 7 fotografías adicionales.</small>
+      <small>
+        La portada se imprime automáticamente. Puedes elegir hasta
+        7 fotografías adicionales.
+      </small>
     </div>
   `;
 
   const rows = photos.map((photo, i) => `
     <div class="admin-photo-row" data-index="${i}">
       <div class="admin-photo-preview">
-        ${photo.preview || photo.archivo
-          ? `<img src="${escapeHtml(photo.preview || photo.archivo)}" alt="Fotografía ${i + 1}">`
-          : "<span>Sin fotografía</span>"
+        ${
+          photo.preview || photo.archivo
+            ? `<img src="${escapeHtml(photo.preview || photo.archivo)}" alt="Fotografía ${i + 1}">`
+            : "<span>Sin fotografía</span>"
         }
       </div>
 
       <div class="admin-photo-fields">
         <label>Título de la fotografía
-          <input data-field="titulo" value="${escapeHtml(photo.titulo)}" placeholder="Ej. Sala y comedor">
+          <input
+            data-field="titulo"
+            value="${escapeHtml(photo.titulo)}"
+            placeholder="Ej. Sala y comedor"
+          >
         </label>
 
         <label>Ruta del archivo
-          <input data-field="archivo" value="${escapeHtml(photo.archivo)}" placeholder="img/casas/nombre-foto.jpeg">
+          <input
+            data-field="archivo"
+            value="${escapeHtml(photo.archivo)}"
+            placeholder="img/casas/nombre-foto.jpeg"
+          >
         </label>
 
         <label>Seleccionar fotografía
           <input type="file" data-file accept="image/*">
         </label>
 
-<label class="admin-print-photo-option">
-  <input type="checkbox" data-print-photo ${photo.principalImpresion ? "checked" : ""}>
-  Fotografía principal para impresión
-</label>
+        <label class="admin-print-photo-option">
+          <input
+            type="checkbox"
+            data-print-photo
+            ${photo.principalImpresion ? "checked" : ""}
+          >
+          Fotografía principal para impresión
+        </label>
 
         <button type="button" class="btn btn-danger btn-small remove-photo">
           Quitar fotografía
@@ -212,24 +330,33 @@ function renderPhotos() {
 
       photos[i].archivo = "img/casas/" + file.name;
       photos[i].preview = URL.createObjectURL(file);
+
       renderPhotos();
 
-      status(`Fotografía seleccionada. Recuerda copiar ${file.name} a img/casas/ y subirla a GitHub.`);
+      status(
+        `Fotografía seleccionada. Recuerda copiar ${file.name} a img/casas/ y subirla a GitHub.`
+      );
     };
 
     row.querySelector("[data-print-photo]").onchange = e => {
-      const count = photos.filter(photo => photo.principalImpresion).length;
+      const count = photos.filter(
+        photo => photo.principalImpresion
+      ).length;
 
       if (e.target.checked && count >= 7) {
         e.target.checked = false;
-        status("Puedes seleccionar como máximo 7 fotografías adicionales. La portada se incluye automáticamente en la impresión.");
+        status(
+          "Puedes seleccionar como máximo 7 fotografías adicionales. La portada se incluye automáticamente en la impresión."
+        );
         return;
       }
 
       photos[i].principalImpresion = e.target.checked;
       renderPhotos();
 
-      status(`Selección de impresión actualizada: ${photos.filter(photo => photo.principalImpresion).length} de 7 fotografías adicionales.`);
+      status(
+        `Selección de impresión actualizada: ${photos.filter(photo => photo.principalImpresion).length} de 7 fotografías adicionales.`
+      );
     };
 
     row.querySelector(".remove-photo").onclick = () => {
@@ -239,15 +366,28 @@ function renderPhotos() {
   });
 }
 
+/* =====================================================
+   ESPACIOS ADICIONALES
+   Se conserva el funcionamiento que ya tienes.
+   ===================================================== */
+
 function renderSpaces() {
   $("#spaces-list").innerHTML = spaces.map((s, i) => `
     <div class="space-row" data-index="${i}">
       <label>Nombre del espacio
-        <input data-field="nombre" value="${escapeHtml(s.nombre)}" placeholder="Ej. Recámara principal">
+        <input
+          data-field="nombre"
+          value="${escapeHtml(s.nombre)}"
+          placeholder="Ej. Recámara principal"
+        >
       </label>
 
       <label>Descripción
-        <input data-field="descripcion" value="${escapeHtml(s.descripcion || "")}" placeholder="Opcional">
+        <input
+          data-field="descripcion"
+          value="${escapeHtml(s.descripcion || "")}"
+          placeholder="Opcional"
+        >
       </label>
 
       <div class="space-photo-cell">
@@ -255,15 +395,22 @@ function renderSpaces() {
           <input data-field="foto" type="file" accept="image/*">
         </label>
 
-        ${s.foto
-          ? `<img src="${escapeHtml(s.preview || s.foto)}" alt="Foto del espacio">`
-          : ""
+        ${
+          s.foto
+            ? `<img src="${escapeHtml(s.preview || s.foto)}" alt="Foto del espacio">`
+            : ""
         }
 
-        <input data-field="rutaFoto" value="${escapeHtml(s.foto || "")}" placeholder="img/casas/archivo.jpeg">
+        <input
+          data-field="rutaFoto"
+          value="${escapeHtml(s.foto || "")}"
+          placeholder="img/casas/archivo.jpeg"
+        >
       </div>
 
-      <button class="btn btn-danger btn-small remove-space" type="button">Quitar</button>
+      <button class="btn btn-danger btn-small remove-space" type="button">
+        Quitar
+      </button>
     </div>
   `).join("");
 
@@ -299,6 +446,10 @@ function renderSpaces() {
   });
 }
 
+/* =====================================================
+   IMPORTAR CATÁLOGO JSON
+   ===================================================== */
+
 $("#import-json").onchange = async e => {
   try {
     const file = e.target.files[0];
@@ -315,15 +466,24 @@ $("#import-json").onchange = async e => {
 
     renderList();
 
-    if (currentId) selectProperty(currentId);
-    else resetForm();
+    if (currentId) {
+      selectProperty(currentId);
+    } else {
+      resetForm();
+    }
 
-    status("Catálogo importado correctamente. Recuerda descargar el JSON al terminar.");
+    status(
+      "Catálogo importado correctamente. Recuerda descargar el JSON al terminar."
+    );
 
   } catch (err) {
     status("No se pudo importar: " + err.message);
   }
 };
+
+/* =====================================================
+   NUEVO INMUEBLE
+   ===================================================== */
 
 function resetForm() {
   const p = blank();
@@ -332,15 +492,25 @@ function resetForm() {
   homes.push(p);
 
   selectProperty(p.id);
-  status("Nueva propiedad creada. Completa sus datos y guarda.");
+
+  $("#editor-heading").textContent = "Nuevo inmueble";
+
+  status(
+    `Nuevo inmueble creado con el folio ${p.folio}. Completa sus datos y guarda.`
+  );
 }
 
 $("#new-property").onclick = resetForm;
+
+/* =====================================================
+   AGREGAR FOTOGRAFÍAS Y ESPACIOS
+   ===================================================== */
 
 $("#add-photo").onclick = () => {
   photos.push({
     archivo: "",
     titulo: "",
+    principalImpresion: false,
     preview: ""
   });
 
@@ -358,6 +528,10 @@ $("#add-space").onclick = () => {
   renderSpaces();
 };
 
+/* =====================================================
+   SELECCIÓN DE PORTADA
+   ===================================================== */
+
 $("#property-form").elements.portada.onchange = e => {
   const file = e.target.files[0];
   if (!file) return;
@@ -372,15 +546,21 @@ $("#property-form").elements.portada.onchange = e => {
   );
 };
 
+/* =====================================================
+   GUARDAR INMUEBLE
+   ===================================================== */
+
 $("#property-form").onsubmit = e => {
   e.preventDefault();
 
   const f = e.currentTarget;
   const d = Object.fromEntries(new FormData(f).entries());
 
+  const existing = homes.find(x => x.id === (d.id || currentId));
+
   const p = {
     id: d.id || currentId,
-    folio: d.folio,
+    folio: existing?.folio || d.folio || nextFolio(),
     estado: d.estado,
     titulo: d.titulo,
     precio: Number(d.precio) || 0,
@@ -399,8 +579,8 @@ $("#property-form").onsubmit = e => {
     estacionamientos: Number(d.estacionamientos) || 0,
     niveles: Number(d.niveles) || 0,
     antiguedad: d.antiguedad === "" ? null : Number(d.antiguedad),
-    servicios: d.servicios.split(",").map(x => x.trim()).filter(Boolean),
-    entorno: d.entorno.split(",").map(x => x.trim()).filter(Boolean),
+    servicios: (d.servicios || "").split(",").map(x => x.trim()).filter(Boolean),
+    entorno: (d.entorno || "").split(",").map(x => x.trim()).filter(Boolean),
     portada: coverData,
     portadaTitulo: d.portadaTitulo || "Fachada principal",
     fotos: photos
@@ -421,8 +601,11 @@ $("#property-form").onsubmit = e => {
 
   const ix = homes.findIndex(x => x.id === p.id);
 
-  if (ix >= 0) homes[ix] = p;
-  else homes.push(p);
+  if (ix >= 0) {
+    homes[ix] = p;
+  } else {
+    homes.push(p);
+  }
 
   currentId = p.id;
 
@@ -430,14 +613,18 @@ $("#property-form").onsubmit = e => {
   selectProperty(p.id);
 
   status(
-    "Propiedad guardada en esta sesión. Descarga casas.json para conservar los cambios."
+    `Inmueble ${p.folio} guardado en esta sesión. Descarga casas.json para conservar los cambios.`
   );
 };
+
+/* =====================================================
+   ELIMINAR INMUEBLE
+   ===================================================== */
 
 $("#delete-property").onclick = () => {
   if (!currentId) return;
 
-  if (!confirm("¿Eliminar esta propiedad del catálogo local?")) return;
+  if (!confirm("¿Eliminar este inmueble del catálogo local?")) return;
 
   homes = homes.filter(p => p.id !== currentId);
   currentId = homes[0]?.id || null;
@@ -448,17 +635,27 @@ $("#delete-property").onclick = () => {
     selectProperty(currentId);
   } else {
     $("#property-form").reset();
+
     spaces = [];
     photos = [];
     coverData = "";
     coverPreview = "";
+
     $("#spaces-list").innerHTML = "";
     $("#photos-list").innerHTML = "";
     $("#cover-preview").innerHTML = "";
+
+    $("#editor-heading").textContent = "Inventario vacío";
   }
 
-  status("Propiedad eliminada de la sesión. Descarga el JSON para conservar el cambio.");
+  status(
+    "Inmueble eliminado de la sesión. Descarga el JSON para conservar el cambio."
+  );
 };
+
+/* =====================================================
+   DESCARGAR CATÁLOGO JSON
+   ===================================================== */
 
 $("#export-json").onclick = () => {
   const blob = new Blob(
@@ -478,6 +675,10 @@ $("#export-json").onclick = () => {
   status("Se descargó casas.json.");
 };
 
+/* =====================================================
+   CARGA INICIAL
+   ===================================================== */
+
 fetch("data/casas.json")
   .then(r => {
     if (!r.ok) throw new Error("No se pudo leer casas.json");
@@ -487,11 +688,17 @@ fetch("data/casas.json")
     homes = data;
     renderList();
 
-    if (homes[0]) selectProperty(homes[0].id);
-    else resetForm();
+    if (homes[0]) {
+      selectProperty(homes[0].id);
+    } else {
+      resetForm();
+    }
   })
   .catch(() => {
     homes = [];
     renderList();
-    status("No se pudo cargar automáticamente. Usa Importar casas.json o Nueva casa.");
+
+    status(
+      "No se pudo cargar automáticamente. Usa Importar casas.json o Nueva casa."
+    );
   });
