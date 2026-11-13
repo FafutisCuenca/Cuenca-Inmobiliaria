@@ -18,9 +18,7 @@
 
   function formatValue(value) {
     if (value === null || value === undefined || value === "") return null;
-
     const number = Number(value);
-
     if (!Number.isFinite(number) || number <= 0) return null;
 
     return new Intl.NumberFormat("es-MX", {
@@ -30,7 +28,6 @@
 
   function specification(label, value, unit, iconName) {
     const formatted = formatValue(value);
-
     if (!formatted) return "";
 
     return `
@@ -55,6 +52,99 @@
     ].filter(Boolean).join("");
   }
 
+  // Admite tanto el formato nuevo como las fotografías antiguas.
+  function normalizePhoto(photo, index) {
+    if (typeof photo === "string") {
+      return {
+        archivo: photo,
+        titulo: `Fotografía ${index + 1}`
+      };
+    }
+
+    if (photo && typeof photo === "object" && photo.archivo) {
+      return {
+        archivo: photo.archivo,
+        titulo: photo.titulo || `Fotografía ${index + 1}`
+      };
+    }
+
+    return null;
+  }
+
+  let lightboxPhotos = [];
+  let lightboxIndex = 0;
+
+  function closeLightbox() {
+    const modal = document.getElementById("photo-lightbox");
+    if (modal) modal.remove();
+    document.removeEventListener("keydown", lightboxKeyboard);
+  }
+
+  function showLightbox(index) {
+    if (!lightboxPhotos.length) return;
+
+    lightboxIndex =
+      (index + lightboxPhotos.length) % lightboxPhotos.length;
+
+    const photo = lightboxPhotos[lightboxIndex];
+
+    let modal = document.getElementById("photo-lightbox");
+
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "photo-lightbox";
+      modal.className = "photo-lightbox";
+      modal.innerHTML = `
+        <button class="lightbox-close" type="button" aria-label="Cerrar">×</button>
+        <button class="lightbox-prev" type="button" aria-label="Anterior">‹</button>
+        <div class="lightbox-content">
+          <img class="lightbox-image" src="" alt="">
+          <div class="lightbox-caption">
+            <span class="lightbox-title"></span>
+            <span class="lightbox-counter"></span>
+          </div>
+        </div>
+        <button class="lightbox-next" type="button" aria-label="Siguiente">›</button>
+      `;
+
+      document.body.appendChild(modal);
+
+      modal.querySelector(".lightbox-close").onclick = closeLightbox;
+      modal.querySelector(".lightbox-prev").onclick = () =>
+        showLightbox(lightboxIndex - 1);
+      modal.querySelector(".lightbox-next").onclick = () =>
+        showLightbox(lightboxIndex + 1);
+
+      modal.addEventListener("click", e => {
+        if (e.target === modal) closeLightbox();
+      });
+
+      document.addEventListener("keydown", lightboxKeyboard);
+    }
+
+    modal.querySelector(".lightbox-image").src = photo.archivo;
+    modal.querySelector(".lightbox-image").alt = photo.titulo;
+    modal.querySelector(".lightbox-title").textContent = photo.titulo;
+    modal.querySelector(".lightbox-counter").textContent =
+      `${lightboxIndex + 1} / ${lightboxPhotos.length}`;
+  }
+
+  function lightboxKeyboard(e) {
+    if (!document.getElementById("photo-lightbox")) return;
+
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") showLightbox(lightboxIndex + 1);
+    if (e.key === "ArrowLeft") showLightbox(lightboxIndex - 1);
+  }
+
+  function bindPhotoButtons() {
+    root.querySelectorAll("[data-photo-index]").forEach(button => {
+      button.addEventListener("click", () => {
+        showLightbox(Number(button.dataset.photoIndex));
+      });
+    });
+  }
+
   async function init() {
     try {
       const id = new URLSearchParams(location.search).get("id");
@@ -73,7 +163,10 @@
         return;
       }
 
-      const imgs = (p.fotos || []).filter(Boolean);
+      const photos = (p.fotos || [])
+        .map(normalizePhoto)
+        .filter(Boolean);
+
       const spaces = p.espacios || [];
 
       const locationText = [
@@ -86,6 +179,17 @@
 
       const message =
         `Hola, me interesa recibir información sobre ${p.titulo} (${p.folio}).`;
+
+      lightboxPhotos = [];
+
+      if (p.portada) {
+        lightboxPhotos.push({
+          archivo: p.portada,
+          titulo: p.portadaTitulo || "Fachada principal"
+        });
+      }
+
+      lightboxPhotos.push(...photos);
 
       root.innerHTML = `
         <p class="eyebrow">${esc(p.folio)} · CASA HABITACIÓN EN VENTA</p>
@@ -102,25 +206,36 @@
           <div class="detail-main-photo">
             ${
               p.portada
-                ? `<img src="${esc(p.portada)}" alt="Fotografía principal de ${esc(p.titulo)}">`
+                ? `<button class="detail-photo-button" type="button" data-photo-index="0">
+                    <img src="${esc(p.portada)}" alt="${esc(p.portadaTitulo || "Fachada principal")}">
+                    <span class="photo-open-hint">Ampliar fotografía</span>
+                  </button>
+                  <p class="main-photo-caption">${esc(p.portadaTitulo || "Fachada principal")}</p>`
                 : "<div class='property-image'></div>"
             }
-          </div>
-
-          <div class="detail-thumbs">
-            ${imgs.slice(0, 2).map(x =>
-              `<img src="${esc(x)}" alt="Fotografía de la propiedad">`
-            ).join("")}
           </div>
         </div>
 
         ${
-          imgs.length > 2
-            ? `<div class="gallery-strip">
-                ${imgs.slice(2).map(x =>
-                  `<img src="${esc(x)}" alt="Fotografía adicional">`
-                ).join("")}
-              </div>`
+          photos.length
+            ? `<section class="detail-section photo-gallery-section">
+                <h2>Galería fotográfica</h2>
+                <p class="muted">Conoce los diferentes espacios y detalles de esta propiedad.</p>
+                <div class="property-photo-gallery">
+                  ${photos.map((photo, index) => `
+                    <article class="property-photo-card">
+                      <button class="gallery-photo-button" type="button"
+                        data-photo-index="${p.portada ? index + 1 : index}">
+                        <img src="${esc(photo.archivo)}" alt="${esc(photo.titulo)}" loading="lazy">
+                        <span class="photo-open-hint">Ampliar fotografía</span>
+                      </button>
+                      <div class="property-photo-caption">
+                        <h3>${esc(photo.titulo)}</h3>
+                      </div>
+                    </article>
+                  `).join("")}
+                </div>
+              </section>`
             : ""
         }
 
@@ -214,7 +329,9 @@
         </div>
       `;
 
+      bindPhotoButtons();
       document.title = p.titulo + " | CUENCA";
+
     } catch (error) {
       root.innerHTML =
         "<p>No fue posible cargar la información de la propiedad.</p>";
