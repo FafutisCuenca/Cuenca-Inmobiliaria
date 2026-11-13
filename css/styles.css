@@ -1,0 +1,1727 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+/* =====================================================
+   1. VARIABLES Y ESTILOS GENERALES
+   ===================================================== */
+
+:root {
+  --ink: #172a3a;
+  --blue: #19364c;
+  --gold: #b89b68;
+  --muted: #687782;
+  --paper: #f7f6f2;
+  --line: #e4e2dc;
+  --white: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: 'DM Sans', Arial, sans-serif;
+  background: #fff;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* =====================================================
+   2. ENCABEZADO Y NAVEGACIÓN
+   ===================================================== */
+
+.site-header {
+  min-height: 82px;
+  padding: 14px max(5vw, 22px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: .13em;
+}
+
+.brand b {
+  display: block;
+  font-size: 19px;
+  letter-spacing: .2em;
+}
+
+.brand small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: .25em;
+  color: var(--muted);
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--gold);
+  display: grid;
+  place-items: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 25px;
+  color: var(--gold);
+}
+
+nav {
+  display: flex;
+  gap: 26px;
+  font-size: 13px;
+  color: #53616b;
+}
+
+nav a.active,
+nav a:hover {
+  color: var(--gold);
+}
+
+/* =====================================================
+   3. BOTONES
+   ===================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  padding: 12px 20px;
+  font: 600 12px 'DM Sans', sans-serif;
+  letter-spacing: .04em;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.btn-light {
+  background: #fff;
+  color: var(--blue);
+}
+
+.btn-dark {
+  background: var(--blue);
+  color: #fff;
+}
+
+.btn-outline {
+  border-color: #aab2b7;
+  color: var(--blue);
+  background: transparent;
+}
+
+.btn-danger {
+  background: #fff4f2;
+  color: #9a382d;
+  border-color: #e7c5c0;
+}
+
+.btn-small {
+  padding: 7px 12px;
+  min-height: 34px;
+}
+
+/* =====================================================
+   4. PORTADA PRINCIPAL
+   ===================================================== */
+
+.hero {
+  min-height: 510px;
+  background: var(--blue);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  color: #fff;
+}
+
+.hero-copy {
+  padding: 85px 8vw 80px 10vw;
+  align-self: center;
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: .22em;
+  font-weight: 700;
+  color: var(--gold);
+  margin: 0 0 14px;
+}
+
+.hero h1 {
+  font-size: clamp(36px, 4vw, 58px);
+  margin: 0 0 20px;
+}
+
+.hero-copy > p:not(.eyebrow) {
+  color: #d9e0e4;
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+.hero-photo {
+  background:
+    linear-gradient(90deg, rgba(25,54,76,.12), transparent),
+    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85')
+    center/cover;
+  min-height: 400px;
+}
+
+/* =====================================================
+   5. SECCIONES GENERALES
+   ===================================================== */
+
+.section {
+  padding: 75px max(5vw, 22px);
+}
+
+.page-section {
+  max-width: 1240px;
+  margin: auto;
+  min-height: 65vh;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 28px;
+  gap: 20px;
+}
+
+.section h2,
+.contact-strip h2 {
+  font-size: 36px;
+  margin: 0 0 10px;
+}
+
+.section-heading p:not(.eyebrow),
+.lead {
+  color: var(--muted);
+  margin: 0;
+}
+
+.text-link {
+  font-size: 12px;
+  color: #8d754d;
+}
+
+/* =====================================================
+   6. CATÁLOGO DE PROPIEDADES
+   ===================================================== */
+
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.property-card {
+  border: 1px solid var(--line);
+  background: #fff;
+  transition: .2s;
+}
+
+.property-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px #182d3b12;
+}
+
+.property-image {
+  height: 235px;
+  background: #e9e8e2 center/cover;
+  position: relative;
+}
+
+.property-image .status {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #fff;
+  padding: 6px 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.property-info {
+  padding: 19px;
+}
+
+.property-info h3 {
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.property-price {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--blue);
+  margin: 10px 0;
+}
+
+/* Características con iconos en catálogo */
+
+.property-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  gap: 13px 10px;
+  color: var(--muted);
+  font-size: 11px;
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  align-items: start;
+}
+
+.property-spec {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+  min-width: 0;
+  text-align: center;
+  color: var(--blue);
+}
+
+.property-spec-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+.property-spec-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1.3;
+}
+
+.property-spec-label {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+/* =====================================================
+   7. FILTROS DEL CATÁLOGO
+   ===================================================== */
+
+.filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.filters label,
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12px;
+  color: #53616b;
+}
+
+.filters input,
+.filters select,
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+  border: 1px solid #d9deda;
+  padding: 11px 12px;
+  font: 14px 'DM Sans', sans-serif;
+  min-width: 0;
+  background: #fff;
+  color: var(--ink);
+}
+
+/* =====================================================
+   8. FICHA INDIVIDUAL DE PROPIEDAD
+   ===================================================== */
+
+.detail-header {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.detail-header h1 {
+  font-size: 38px;
+  margin: 5px 0 8px;
+}
+
+/* Franja de precio */
+
+.property-price-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  background: var(--blue);
+  color: #fff;
+  padding: 20px 25px;
+  margin: 20px 0 22px;
+}
+
+.property-price-banner div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.property-price-banner div span {
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: #d8c39e;
+  font-weight: 700;
+}
+
+.property-price-banner strong {
+  font-size: 27px;
+  line-height: 1.2;
+}
+
+.price-condition {
+  font-size: 12px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.35);
+  padding: 7px 12px;
+  white-space: nowrap;
+}
+
+/* Fotografía principal */
+
+.property-detail-hero {
+  display: block;
+  height: auto;
+  margin: 20px 0 10px;
+}
+
+.detail-main-photo {
+  width: 100%;
+  min-width: 0;
+}
+
+.detail-photo-button,
+.gallery-photo-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.detail-photo-button img {
+  display: block;
+  width: 100%;
+  height: 440px;
+  object-fit: cover;
+}
+
+.main-photo-caption {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.photo-open-hint {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 7px 11px;
+  background: rgba(23,42,58,.82);
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: .04em;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.detail-photo-button:hover .photo-open-hint,
+.gallery-photo-button:hover .photo-open-hint {
+  opacity: 1;
+}
+
+/* Resumen de características */
+
+.detail-summary {
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0 10px;
+  margin-bottom: 20px;
+}
+
+.detail-summary h2 {
+  font-size: 25px;
+  margin: 0 0 10px;
+}
+
+.detail-summary-grid {
+  margin: 18px 0;
+}
+
+.detail-summary-grid .spec {
+  min-height: 112px;
+}
+
+/* Cuadrícula de características */
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.spec {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 18px 10px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 5px;
+}
+
+.detail-spec-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.spec b {
+  display: block;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--blue);
+}
+
+.spec span {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* Columnas de información */
+
+.detail-columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 45px;
+  margin-top: 35px;
+}
+
+.detail-section {
+  border-top: 1px solid var(--line);
+  padding: 25px 0;
+}
+
+.detail-section h2 {
+  font-size: 25px;
+}
+
+.detail-aside {
+  background: var(--paper);
+  padding: 25px;
+  height: max-content;
+}
+
+.detail-aside h3 {
+  font-size: 23px;
+}
+
+.detail-aside p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.detail-aside .btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* =====================================================
+   9. ESPACIOS ADICIONALES DE LA PROPIEDAD
+   ===================================================== */
+
+.space-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.space-card {
+  border: 1px solid var(--line);
+}
+
+.space-card img {
+  width: 100%;
+  height: 155px;
+  object-fit: cover;
+}
+
+.space-card div {
+  padding: 12px;
+}
+
+.space-card h3 {
+  font-size: 17px;
+  margin: 0;
+}
+
+.space-card p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 5px 0;
+}
+
+/* =====================================================
+   10. GALERÍA FOTOGRÁFICA
+   ===================================================== */
+
+.photo-gallery-section {
+  margin-top: 25px;
+}
+
+.property-photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 22px;
+}
+
+.property-photo-card {
+  border: 1px solid var(--line);
+  background: #fff;
+  min-width: 0;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.property-photo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px #172a3a12;
+}
+
+.gallery-photo-button img {
+  display: block;
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  transition: transform .3s ease;
+}
+
+.gallery-photo-button:hover img {
+  transform: scale(1.035);
+}
+
+.property-photo-caption {
+  padding: 13px 15px;
+}
+
+.property-photo-caption h3 {
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--blue);
+}
+
+/* Galería secundaria */
+
+.gallery-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.gallery-strip img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+/* =====================================================
+   11. VISOR AMPLIADO DE FOTOGRAFÍAS
+   ===================================================== */
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 55px 70px;
+  background: rgba(8,17,25,.94);
+}
+
+.lightbox-content {
+  max-width: 1050px;
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-image {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 145px);
+  object-fit: contain;
+}
+
+.lightbox-caption {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  color: #fff;
+  padding-top: 15px;
+  font-size: 13px;
+}
+
+.lightbox-counter {
+  color: #d1d6d9;
+  white-space: nowrap;
+}
+
+.photo-lightbox button {
+  position: absolute;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+
+.lightbox-close {
+  top: 15px;
+  right: 25px;
+  font-size: 40px;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 55px;
+  padding: 10px;
+}
+
+.lightbox-prev {
+  left: 15px;
+}
+
+.lightbox-next {
+  right: 15px;
+}
+
+.photo-lightbox button:hover {
+  color: var(--gold);
+}
+
+/* =====================================================
+   12. CONTACTO
+   ===================================================== */
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 35px 0;
+}
+
+.contact-card,
+.contact-form-wrap {
+  border: 1px solid var(--line);
+  padding: 26px;
+}
+
+.contact-card h2,
+.contact-form-wrap h2 {
+  font-size: 25px;
+}
+
+.contact-card p {
+  color: var(--muted);
+  min-height: 48px;
+}
+
+.contact-form-wrap {
+  max-width: 850px;
+}
+
+.contact-form-wrap form > button {
+  margin-top: 5px;
+}
+
+/* Formulario general de contacto */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.form-grid .full {
+  grid-column: 1 / -1;
+}
+
+/* =====================================================
+   13. FRANJA DE CONTACTO Y PIE DE PÁGINA
+   ===================================================== */
+
+.contact-strip {
+  background: var(--paper);
+  padding: 48px max(5vw, 22px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+}
+
+.contact-strip p:last-child {
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+.site-footer {
+  padding: 25px max(5vw, 22px);
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 11px;
+  border-top: 1px solid var(--line);
+}
+
+.notice {
+  background: #f4f2eb;
+  padding: 12px;
+  color: #5c594f;
+  font-size: 12px;
+}
+
+/* =====================================================
+   14. ADMINISTRADOR - DISTRIBUCIÓN GENERAL
+   ===================================================== */
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: minmax(270px, 340px) minmax(0, 1fr);
+  gap: 30px;
+  align-items: start;
+}
+
+#property-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#property-form {
+  min-width: 0;
+}
+
+/* =====================================================
+   15. ADMINISTRADOR - INVENTARIO DE PROPIEDADES
+   ===================================================== */
+
+.admin-property {
+  display: grid;
+  grid-template-columns: 105px minmax(0, 1fr);
+  gap: 13px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.admin-property:hover {
+  border-color: var(--gold);
+  box-shadow: 0 5px 16px #172a3a12;
+}
+
+.admin-property.active {
+  border-color: var(--gold);
+  box-shadow: inset 3px 0 0 var(--gold);
+  background: #fbfaf7;
+}
+
+.admin-property-image {
+  display: block;
+  width: 105px;
+  height: 92px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.admin-property-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-property-no-image {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+.admin-property-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 4px;
+}
+
+.admin-property-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+}
+
+.admin-property-folio {
+  color: var(--blue);
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+.admin-property-status {
+  display: inline-block;
+  padding: 2px 7px;
+  background: #f0eee8;
+  color: #70654f;
+  font-size: 9px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.admin-property-status.status-publicada {
+  background: #eaf2ec;
+  color: #376747;
+}
+
+.admin-property-title {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.admin-property-price {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-property-location {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.admin-property-action {
+  margin-top: 3px;
+  color: #8d754d;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* =====================================================
+   16. ADMINISTRADOR - SECCIONES DEL FORMULARIO
+   ===================================================== */
+
+.admin-form-section {
+  padding: 20px;
+  margin: 0 0 20px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.admin-form-section h2,
+.admin-form-section h3 {
+  margin-top: 0;
+}
+
+.admin-form-section h2 {
+  margin-bottom: 5px;
+  font-size: 21px;
+}
+
+.admin-form-section > p {
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#editor-heading {
+  margin-bottom: 20px;
+}
+
+#property-form .admin-form-section + .admin-form-section {
+  margin-top: 18px;
+}
+
+/* Cuadrícula de campos */
+
+#property-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 13px;
+  margin: 16px 0;
+  align-items: end;
+}
+
+#property-form .form-grid > label {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  margin: 0;
+  color: #53616b;
+  font-size: 11px;
+}
+
+/* Campos que ocupan toda la fila */
+
+#property-form .form-grid > label.full,
+#property-form .form-grid > label:has(textarea),
+#property-form .form-grid > label:has([name="descripcion"]),
+#property-form .form-grid > label:has([name="direccion"]),
+#property-form .form-grid > label:has([name="servicios"]),
+#property-form .form-grid > label:has([name="entorno"]) {
+  grid-column: 1 / -1;
+}
+
+/* Ubicación */
+
+#property-form .form-grid > label:has([name="estadoUbicacion"]),
+#property-form .form-grid > label:has([name="municipio"]),
+#property-form .form-grid > label:has([name="colonia"]) {
+  grid-column: span 4;
+}
+
+#property-form .form-grid > label:has([name="cp"]) {
+  grid-column: span 2;
+}
+
+/* Datos comerciales */
+
+#property-form .form-grid > label:has([name="folio"]),
+#property-form .form-grid > label:has([name="estado"]) {
+  grid-column: span 3;
+}
+
+#property-form .form-grid > label:has([name="titulo"]) {
+  grid-column: span 6;
+}
+
+#property-form .form-grid > label:has([name="precio"]) {
+  grid-column: span 4;
+}
+
+#property-form .form-grid > label:has([name="negociable"]) {
+  grid-column: span 3;
+}
+
+/* Características numéricas */
+
+#property-form .form-grid > label:has([name="terreno"]),
+#property-form .form-grid > label:has([name="construccion"]) {
+  grid-column: span 3;
+}
+
+#property-form .form-grid > label:has([name="recamaras"]),
+#property-form .form-grid > label:has([name="banos"]),
+#property-form .form-grid > label:has([name="mediosBanos"]),
+#property-form .form-grid > label:has([name="estacionamientos"]),
+#property-form .form-grid > label:has([name="niveles"]),
+#property-form .form-grid > label:has([name="antiguedad"]) {
+  grid-column: span 2;
+}
+
+/* Controles del formulario administrativo */
+
+#property-form .form-grid input,
+#property-form .form-grid select,
+#property-form .form-grid textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #d9deda;
+  border-radius: 2px;
+  background: #fff;
+  color: var(--ink);
+  font: 13px 'DM Sans', Arial, sans-serif;
+}
+
+#property-form .form-grid input:focus,
+#property-form .form-grid select:focus,
+#property-form .form-grid textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px #b89b681c;
+}
+
+#property-form .form-grid textarea {
+  min-height: 95px;
+  resize: vertical;
+}
+
+#property-form .form-grid input[readonly] {
+  background: var(--paper);
+  color: var(--muted);
+  font-weight: 700;
+  cursor: default;
+}
+
+#property-form input[name="folio"] {
+  letter-spacing: .06em;
+}
+
+#property-form input[type="number"] {
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Estado de administración */
+
+#admin-status {
+  margin: 14px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* =====================================================
+   17. ADMINISTRADOR - PORTADA Y FOTOGRAFÍAS
+   ===================================================== */
+
+/* Vista previa de portada */
+
+#cover-preview {
+  width: 100%;
+  max-width: 280px;
+  height: 150px;
+  margin-top: 10px;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+#cover-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+}
+
+/* Editor de galería */
+
+.gallery-editor {
+  border-top: 1px solid var(--line);
+  padding: 25px 0;
+  margin-top: 25px;
+}
+
+.admin-photo-row {
+  display: grid;
+  grid-template-columns: 155px minmax(0, 1fr);
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  margin: 14px 0;
+  background: #fff;
+}
+
+.admin-photo-preview {
+  width: 100%;
+  height: 115px;
+  min-height: 115px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 11px;
+  overflow: hidden;
+}
+
+.admin-photo-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+}
+
+.admin-photo-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  min-width: 0;
+}
+
+.admin-photo-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.admin-photo-fields input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #d9deda;
+  padding: 9px 10px;
+  font: 13px 'DM Sans', sans-serif;
+}
+
+.admin-photo-fields .btn {
+  justify-self: start;
+}
+
+/* Vista previa genérica de fotografías */
+
+.photo-preview {
+  width: 100%;
+  max-width: 280px;
+  max-height: 150px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.photo-preview img {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  margin: 0;
+}
+
+/* Selección de fotografías para impresión */
+
+.admin-print-photo-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  margin: 8px 0;
+  padding: 5px 0;
+  color: var(--ink);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.admin-photo-fields label.admin-print-photo-option {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.admin-print-photo-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+/* Resumen de fotografías para impresión */
+
+.admin-photo-print-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.admin-photo-print-summary strong {
+  color: var(--blue);
+  font-size: 12px;
+}
+
+.admin-photo-print-summary small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* =====================================================
+   18. ADMINISTRADOR - ESPACIOS ADICIONALES
+   ===================================================== */
+
+.space-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 16px;
+  margin: 14px 0;
+  border: 1px solid var(--line);
+  background: #fff;
+  align-items: start;
+}
+
+.space-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.space-row input,
+.space-row textarea,
+.space-row select {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid #d9deda;
+  background: #fff;
+  color: var(--ink);
+  font: 13px 'DM Sans', sans-serif;
+}
+
+.space-row textarea {
+  min-height: 75px;
+  resize: vertical;
+}
+
+.space-row .space-photo-cell {
+  min-width: 0;
+}
+
+.space-row .space-photo-cell img {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  height: 115px;
+  margin-top: 8px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+/* =====================================================
+   19. RESPONSIVE - TABLETAS
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+  .admin-layout {
+    grid-template-columns: minmax(230px, 290px) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  #property-form .form-grid > label {
+    grid-column: span 6;
+  }
+
+  #property-form .form-grid > label:has(textarea),
+  #property-form .form-grid > label:has([name="descripcion"]),
+  #property-form .form-grid > label:has([name="direccion"]),
+  #property-form .form-grid > label:has([name="servicios"]),
+  #property-form .form-grid > label:has([name="entorno"]) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding: 60px 8vw;
+  }
+
+  .hero-photo {
+    min-height: 270px;
+  }
+
+  .property-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .spec-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .property-meta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .property-photo-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-photo-button img {
+    height: 350px;
+  }
+
+  .property-price-banner strong {
+    font-size: 24px;
+  }
+}
+
+/* =====================================================
+   20. RESPONSIVE - CELULARES
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #property-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .admin-property {
+    grid-template-columns: 75px minmax(0, 1fr);
+    gap: 9px;
+    padding: 8px;
+  }
+
+  .admin-property-image {
+    width: 75px;
+    height: 80px;
+  }
+
+  .admin-property-title {
+    font-size: 11px;
+  }
+
+  .admin-property-price {
+    font-size: 11px;
+  }
+
+  #property-form .form-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 11px;
+  }
+
+  #property-form .form-grid > label,
+  #property-form .form-grid > label:has([name="estadoUbicacion"]),
+  #property-form .form-grid > label:has([name="municipio"]),
+  #property-form .form-grid > label:has([name="colonia"]),
+  #property-form .form-grid > label:has([name="cp"]),
+  #property-form .form-grid > label:has([name="folio"]),
+  #property-form .form-grid > label:has([name="estado"]),
+  #property-form .form-grid > label:has([name="titulo"]),
+  #property-form .form-grid > label:has([name="precio"]),
+  #property-form .form-grid > label:has([name="negociable"]),
+  #property-form .form-grid > label:has([name="terreno"]),
+  #property-form .form-grid > label:has([name="construccion"]),
+  #property-form .form-grid > label:has([name="recamaras"]),
+  #property-form .form-grid > label:has([name="banos"]),
+  #property-form .form-grid > label:has([name="mediosBanos"]),
+  #property-form .form-grid > label:has([name="estacionamientos"]),
+  #property-form .form-grid > label:has([name="niveles"]),
+  #property-form .form-grid > label:has([name="antiguedad"]) {
+    grid-column: span 3;
+  }
+
+  #property-form .form-grid > label:has(textarea),
+  #property-form .form-grid > label:has([name="descripcion"]),
+  #property-form .form-grid > label:has([name="direccion"]),
+  #property-form .form-grid > label:has([name="servicios"]),
+  #property-form .form-grid > label:has([name="entorno"]) {
+    grid-column: 1 / -1;
+  }
+
+  .admin-form-section {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .site-header nav {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .property-grid,
+  .filters,
+  .contact-layout,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .property-detail-hero {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .property-detail-hero .detail-main-photo img {
+    height: 260px;
+  }
+
+  .detail-thumbs {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+  }
+
+  .detail-thumbs img {
+    height: 120px;
+  }
+
+  .detail-header {
+    flex-direction: column;
+  }
+
+  .detail-header h1 {
+    font-size: 31px;
+  }
+
+  .spec-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .spec {
+    padding: 15px 8px;
+  }
+
+  .spec b {
+    font-size: 17px;
+  }
+
+  .property-meta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px 6px;
+  }
+
+  .property-spec-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .property-spec-value {
+    font-size: 12px;
+  }
+
+  .property-spec-label {
+    font-size: 9px;
+  }
+
+  .space-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .property-photo-gallery {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .gallery-photo-button img {
+    height: 230px;
+  }
+
+  .detail-photo-button img {
+    height: 260px;
+  }
+
+  .property-price-banner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 17px;
+    gap: 12px;
+  }
+
+  .property-price-banner strong {
+    font-size: 23px;
+  }
+
+  .detail-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contact-strip {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .site-footer {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .admin-photo-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-photo-preview {
+    height: 150px;
+  }
+
+  #cover-preview {
+    max-width: 100%;
+    height: 160px;
+  }
+
+  .space-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 13px;
+  }
+
+  .space-row .space-photo-cell img {
+    max-width: 100%;
+    height: 150px;
+  }
+
+  .photo-lightbox {
+    padding: 55px 15px;
+  }
+
+  .lightbox-prev {
+    left: 0;
+  }
+
+  .lightbox-next {
+    right: 0;
+  }
+
+  .lightbox-image {
+    max-height: calc(100vh - 160px);
+  }
+}
+
+/* =====================================================
+   21. RESPONSIVE - PANTALLAS MUY PEQUEÑAS
+   ===================================================== */
+
+@media (max-width: 420px) {
+
+  #property-list {
+    grid-template-columns: 1fr;
+  }
+
+  #property-form .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #property-form .form-grid > label,
+  #property-form .form-grid > label:has([name="estadoUbicacion"]),
+  #property-form .form-grid > label:has([name="municipio"]),
+  #property-form .form-grid > label:has([name="colonia"]),
+  #property-form .form-grid > label:has([name="cp"]),
+  #property-form .form-grid > label:has([name="folio"]),
+  #property-form .form-grid > label:has([name="estado"]),
+  #property-form .form-grid > label:has([name="titulo"]),
+  #property-form .form-grid > label:has([name="precio"]),
+  #property-form .form-grid > label:has([name="negociable"]),
+  #property-form .form-grid > label:has([name="terreno"]),
+  #property-form .form-grid > label:has([name="construccion"]),
+  #property-form .form-grid > label:has([name="recamaras"]),
+  #property-form .form-grid > label:has([name="banos"]),
+  #property-form .form-grid > label:has([name="mediosBanos"]),
+  #property-form .form-grid > label:has([name="estacionamientos"]),
+  #property-form .form-grid > label:has([name="niveles"]),
+  #property-form .form-grid > label:has([name="antiguedad"]) {
+    grid-column: span 1;
+  }
+
+  #property-form .form-grid > label:has(textarea),
+  #property-form .form-grid > label:has([name="descripcion"]),
+  #property-form .form-grid > label:has([name="direccion"]),
+  #property-form .form-grid > label:has([name="servicios"]),
+  #property-form .form-grid > label:has([name="entorno"]) {
+    grid-column: 1 / -1;
+  }
+}
