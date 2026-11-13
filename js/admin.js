@@ -183,10 +183,10 @@ function renderPhotos() {
           <input type="file" data-file accept="image/*">
         </label>
 
-        <label class="admin-print-photo-option">
-          <input type="checkbox" data-print-photo ${photo.principalImpresion ? "checked" : ""}>
-          Incluir en impresión
-        </label>
+<label class="admin-print-photo-option">
+  <input type="checkbox" data-print-photo ${photo.principalImpresion ? "checked" : ""}>
+  Fotografía principal para impresión
+</label>
 
         <button type="button" class="btn btn-danger btn-small remove-photo">
           Quitar fotografía
