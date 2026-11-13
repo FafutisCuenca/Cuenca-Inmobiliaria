@@ -753,3 +753,482 @@
     height: 150px;
   }
 }
+
+
+
+/* =====================================================
+   CUENCA INMOBILIARIA
+   ADMINISTRACION - INVENTARIO Y FORMULARIO COMPACTO
+   ===================================================== */
+
+/* DISTRIBUCION GENERAL DEL ADMINISTRADOR */
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: minmax(270px, 340px) minmax(0, 1fr);
+  gap: 30px;
+  align-items: start;
+}
+
+#property-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* TARJETAS DEL INVENTARIO */
+
+.admin-property {
+  display: grid;
+  grid-template-columns: 105px minmax(0, 1fr);
+  gap: 13px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.admin-property:hover {
+  border-color: var(--gold);
+  box-shadow: 0 5px 16px #172a3a12;
+}
+
+.admin-property.active {
+  border-color: var(--gold);
+  box-shadow: inset 3px 0 0 var(--gold);
+  background: #fbfaf7;
+}
+
+.admin-property-image {
+  display: block;
+  width: 105px;
+  height: 92px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.admin-property-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-property-no-image {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+.admin-property-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 4px;
+}
+
+.admin-property-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+}
+
+.admin-property-folio {
+  color: var(--blue);
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+.admin-property-status {
+  display: inline-block;
+  padding: 2px 7px;
+  background: #f0eee8;
+  color: #70654f;
+  font-size: 9px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.admin-property-status.status-publicada {
+  background: #eaf2ec;
+  color: #376747;
+}
+
+.admin-property-title {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.admin-property-price {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-property-location {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.admin-property-action {
+  margin-top: 3px;
+  color: #8d754d;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* SECCIONES DEL FORMULARIO */
+
+#property-form {
+  min-width: 0;
+}
+
+.admin-form-section {
+  padding: 20px;
+  margin: 0 0 20px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.admin-form-section h2,
+.admin-form-section h3 {
+  margin-top: 0;
+}
+
+.admin-form-section h2 {
+  margin-bottom: 5px;
+  font-size: 21px;
+}
+
+.admin-form-section > p {
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* CUADRICULA DE CAMPOS: 12 COLUMNAS */
+
+#property-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 13px;
+  margin: 16px 0;
+  align-items: end;
+}
+
+#property-form .form-grid > label {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  margin: 0;
+  color: #53616b;
+  font-size: 11px;
+}
+
+#property-form .form-grid > label.full,
+#property-form .form-grid > label:has(textarea),
+#property-form .form-grid > label:has([name="descripcion"]),
+#property-form .form-grid > label:has([name="direccion"]),
+#property-form .form-grid > label:has([name="servicios"]),
+#property-form .form-grid > label:has([name="entorno"]) {
+  grid-column: 1 / -1;
+}
+
+/* CAMPOS DE UBICACION */
+
+#property-form .form-grid > label:has([name="estadoUbicacion"]),
+#property-form .form-grid > label:has([name="municipio"]) {
+  grid-column: span 4;
+}
+
+#property-form .form-grid > label:has([name="colonia"]) {
+  grid-column: span 4;
+}
+
+#property-form .form-grid > label:has([name="cp"]) {
+  grid-column: span 2;
+}
+
+/* DATOS COMERCIALES */
+
+#property-form .form-grid > label:has([name="folio"]) {
+  grid-column: span 3;
+}
+
+#property-form .form-grid > label:has([name="estado"]) {
+  grid-column: span 3;
+}
+
+#property-form .form-grid > label:has([name="titulo"]) {
+  grid-column: span 6;
+}
+
+#property-form .form-grid > label:has([name="precio"]) {
+  grid-column: span 4;
+}
+
+#property-form .form-grid > label:has([name="negociable"]) {
+  grid-column: span 3;
+}
+
+/* CARACTERISTICAS NUMERICAS */
+
+#property-form .form-grid > label:has([name="terreno"]),
+#property-form .form-grid > label:has([name="construccion"]) {
+  grid-column: span 3;
+}
+
+#property-form .form-grid > label:has([name="recamaras"]),
+#property-form .form-grid > label:has([name="banos"]),
+#property-form .form-grid > label:has([name="mediosBanos"]),
+#property-form .form-grid > label:has([name="estacionamientos"]),
+#property-form .form-grid > label:has([name="niveles"]),
+#property-form .form-grid > label:has([name="antiguedad"]) {
+  grid-column: span 2;
+}
+
+/* CONTROLES */
+
+#property-form .form-grid input,
+#property-form .form-grid select,
+#property-form .form-grid textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #d9deda;
+  border-radius: 2px;
+  background: #fff;
+  color: var(--ink);
+  font: 13px 'DM Sans', Arial, sans-serif;
+}
+
+#property-form .form-grid input:focus,
+#property-form .form-grid select:focus,
+#property-form .form-grid textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px #b89b681c;
+}
+
+#property-form .form-grid textarea {
+  min-height: 95px;
+  resize: vertical;
+}
+
+#property-form .form-grid input[readonly] {
+  background: var(--paper);
+  color: var(--muted);
+  font-weight: 700;
+  cursor: default;
+}
+
+/* FOLIO Y CAMPOS CORTOS */
+
+#property-form input[name="folio"] {
+  letter-spacing: .06em;
+}
+
+#property-form input[type="number"] {
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+/* TITULOS Y SEPARADORES */
+
+#editor-heading {
+  margin-bottom: 20px;
+}
+
+#property-form .admin-form-section + .admin-form-section {
+  margin-top: 18px;
+}
+
+/* RESUMEN DE FOTOGRAFIAS DE IMPRESION */
+
+.admin-photo-print-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.admin-photo-print-summary strong {
+  color: var(--blue);
+  font-size: 12px;
+}
+
+.admin-photo-print-summary small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* ESTADO DE ADMINISTRACION */
+
+#admin-status {
+  margin: 14px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ADAPTACION A TABLET */
+
+@media (max-width: 1000px) {
+  .admin-layout {
+    grid-template-columns: minmax(230px, 290px) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  #property-form .form-grid > label {
+    grid-column: span 6;
+  }
+
+  #property-form .form-grid > label:has(textarea),
+  #property-form .form-grid > label:has([name="descripcion"]),
+  #property-form .form-grid > label:has([name="direccion"]),
+  #property-form .form-grid > label:has([name="servicios"]),
+  #property-form .form-grid > label:has([name="entorno"]) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ADAPTACION A CELULAR */
+
+@media (max-width: 700px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #property-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .admin-property {
+    grid-template-columns: 75px minmax(0, 1fr);
+    gap: 9px;
+    padding: 8px;
+  }
+
+  .admin-property-image {
+    width: 75px;
+    height: 80px;
+  }
+
+  .admin-property-title {
+    font-size: 11px;
+  }
+
+  .admin-property-price {
+    font-size: 11px;
+  }
+
+  #property-form .form-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 11px;
+  }
+
+  #property-form .form-grid > label,
+  #property-form .form-grid > label:has([name="estadoUbicacion"]),
+  #property-form .form-grid > label:has([name="municipio"]),
+  #property-form .form-grid > label:has([name="colonia"]),
+  #property-form .form-grid > label:has([name="cp"]),
+  #property-form .form-grid > label:has([name="folio"]),
+  #property-form .form-grid > label:has([name="estado"]),
+  #property-form .form-grid > label:has([name="titulo"]),
+  #property-form .form-grid > label:has([name="precio"]),
+  #property-form .form-grid > label:has([name="negociable"]),
+  #property-form .form-grid > label:has([name="terreno"]),
+  #property-form .form-grid > label:has([name="construccion"]),
+  #property-form .form-grid > label:has([name="recamaras"]),
+  #property-form .form-grid > label:has([name="banos"]),
+  #property-form .form-grid > label:has([name="mediosBanos"]),
+  #property-form .form-grid > label:has([name="estacionamientos"]),
+  #property-form .form-grid > label:has([name="niveles"]),
+  #property-form .form-grid > label:has([name="antiguedad"]) {
+    grid-column: span 3;
+  }
+
+  #property-form .form-grid > label:has(textarea),
+  #property-form .form-grid > label:has([name="descripcion"]),
+  #property-form .form-grid > label:has([name="direccion"]),
+  #property-form .form-grid > label:has([name="servicios"]),
+  #property-form .form-grid > label:has([name="entorno"]) {
+    grid-column: 1 / -1;
+  }
+
+  .admin-form-section {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  #property-list {
+    grid-template-columns: 1fr;
+  }
+
+  #property-form .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #property-form .form-grid > label,
+  #property-form .form-grid > label:has([name="estadoUbicacion"]),
+  #property-form .form-grid > label:has([name="municipio"]),
+  #property-form .form-grid > label:has([name="colonia"]),
+  #property-form .form-grid > label:has([name="cp"]),
+  #property-form .form-grid > label:has([name="folio"]),
+  #property-form .form-grid > label:has([name="estado"]),
+  #property-form .form-grid > label:has([name="titulo"]),
+  #property-form .form-grid > label:has([name="precio"]),
+  #property-form .form-grid > label:has([name="negociable"]),
+  #property-form .form-grid > label:has([name="terreno"]),
+  #property-form .form-grid > label:has([name="construccion"]),
+  #property-form .form-grid > label:has([name="recamaras"]),
+  #property-form .form-grid > label:has([name="banos"]),
+  #property-form .form-grid > label:has([name="mediosBanos"]),
+  #property-form .form-grid > label:has([name="estacionamientos"]),
+  #property-form .form-grid > label:has([name="niveles"]),
+  #property-form .form-grid > label:has([name="antiguedad"]) {
+    grid-column: span 1;
+  }
+
+  #property-form .form-grid > label:has(textarea),
+  #property-form .form-grid > label:has([name="descripcion"]),
+  #property-form .form-grid > label:has([name="direccion"]),
+  #property-form .form-grid > label:has([name="servicios"]),
+  #property-form .form-grid > label:has([name="entorno"]) {
+    grid-column: 1 / -1;
+  }
+}
