@@ -60,10 +60,25 @@
       "Toreo e Interlomas."
     ],
     "portada": "img/casas/Fachada-Principal.jpeg",
-    "fotos": ["img/casas/Estancia-Sala.jpeg",
-      "img/casas/Estancia-Escaleras.jpeg",
-      "img/casas/Sala.jpeg",
-      "img/casas/Salita.jpeg"],
+    "portadaTitulo": "Fachada principal",
+    "fotos": [
+      {
+        "archivo": "img/casas/Estancia-Sala.jpeg",
+        "titulo": "Estancia Principal"
+      },
+      {
+        "archivo": "img/casas/Estancia-Escaleras.jpeg",
+        "titulo": "Zona de Escaleras (sube a recamaras / baja a estacionamiento, cuarto de servicio y lavado)"
+      },
+      {
+        "archivo": "img/casas/Sala.jpeg",
+        "titulo": "Sala"
+      },
+      {
+        "archivo": "img/casas/Salita.jpeg",
+        "titulo": "Espacio en Entrada Principal - Recibidor"
+      }
+    ],
     "espacios": []
   }
 ]
