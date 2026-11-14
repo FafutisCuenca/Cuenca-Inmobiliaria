@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Administrador local | CUENCA</title>
   <link rel="stylesheet" href="css/styles.css">
+
   <style>
     .admin-view[hidden] {
       display: none !important;
@@ -29,11 +30,20 @@
       margin-bottom: 20px;
     }
 
-    .admin-featured-field {
-  grid-column: 1 / -1;
-  padding: 8px 0;
-}
-    
+    /* El destacado ocupa una fila completa */
+    .admin-grid-identification .admin-featured-field {
+      grid-column: 1 / -1;
+      width: 100%;
+      padding: 8px 0;
+    }
+
+    /* Texto de ayuda del inmueble destacado */
+    .admin-featured-help {
+      display: block;
+      margin: 6px 0 0 24px;
+      color: var(--muted, #687782);
+      line-height: 1.5;
+    }
   </style>
 </head>
 
@@ -42,21 +52,28 @@
 <header class="site-header">
   <a class="brand" href="index.html">
     <span class="brand-mark">C</span>
-    <span><b>CUENCA</b><small>ADMINISTRACIÓN LOCAL</small></span>
+    <span>
+      <b>CUENCA</b>
+      <small>ADMINISTRACIÓN LOCAL</small>
+    </span>
   </a>
-  <nav><a href="index.html">Ver sitio</a></nav>
+  <nav>
+    <a href="index.html">Ver sitio</a>
+  </nav>
 </header>
 
 <main class="section page-section">
 
   <p class="eyebrow">HERRAMIENTA LOCAL</p>
   <h1>Administración de inmuebles</h1>
+
   <p class="lead">
     Administra tu inventario en tu computadora y descarga el JSON actualizado.
     No se guardan datos en un servidor.
   </p>
 
   <div class="admin-toolbar">
+
     <label class="btn btn-outline file-button">
       Importar casas.json
       <input id="import-json" type="file" accept="application/json,.json">
@@ -69,6 +86,7 @@
     <button id="export-json" class="btn btn-outline" type="button">
       Descargar casas.json
     </button>
+
   </div>
 
   <p id="admin-status" class="notice">
@@ -95,17 +113,23 @@
   <section id="admin-editor-view" class="admin-view admin-editor-view" hidden>
 
     <div class="admin-editor-navigation">
+
       <button id="back-to-inventory" class="btn btn-outline" type="button">
         ← Volver al inventario
       </button>
 
       <h2 id="editor-heading">Editor de inmueble</h2>
+
     </div>
 
     <form id="property-form">
+
       <input type="hidden" name="id">
 
+      <!-- IDENTIFICACIÓN Y PUBLICACIÓN -->
+
       <section class="admin-form-section">
+
         <h3>Identificación y publicación</h3>
 
         <div class="form-grid admin-grid-identification">
@@ -122,26 +146,32 @@
             </select>
           </label>
 
-<div class="admin-featured-field">
-  <label>
-    <input type="checkbox" name="destacado">
-    Mostrar como inmueble destacado
-  </label>
+          <div class="admin-featured-field">
 
-  <small>
-    Este inmueble aparecerá en el carrusel de Inicio únicamente
-    si también está publicado.
-  </small>
-</div>
+            <label class="admin-print-photo-option">
+              <input type="checkbox" name="destacado">
+              Mostrar como inmueble destacado
+            </label>
+
+            <small class="admin-featured-help">
+              Este inmueble aparecerá en el carrusel de Inicio únicamente
+              si también está publicado.
+            </small>
+
+          </div>
 
         </div>
 
         <p class="admin-field-note">
           El folio se asigna automáticamente y no es necesario capturarlo.
         </p>
+
       </section>
 
+      <!-- INFORMACIÓN COMERCIAL -->
+
       <section class="admin-form-section">
+
         <h3>Información comercial</h3>
 
         <div class="form-grid">
@@ -162,9 +192,13 @@
           </label>
 
         </div>
+
       </section>
 
+      <!-- UBICACIÓN -->
+
       <section class="admin-form-section">
+
         <h3>Ubicación</h3>
 
         <div class="form-grid">
@@ -190,9 +224,13 @@
           </label>
 
         </div>
+
       </section>
 
+      <!-- CARACTERÍSTICAS -->
+
       <section class="admin-form-section">
+
         <h3>Características del inmueble</h3>
 
         <div class="form-grid">
@@ -230,9 +268,13 @@
           </label>
 
         </div>
+
       </section>
 
+      <!-- DESCRIPCIÓN Y ENTORNO -->
+
       <section class="admin-form-section">
+
         <h3>Descripción y entorno</h3>
 
         <div class="form-grid">
@@ -250,9 +292,13 @@
           </label>
 
         </div>
+
       </section>
 
+      <!-- FOTOGRAFÍA DE PORTADA -->
+
       <section class="admin-form-section">
+
         <h3>Fotografía de portada</h3>
 
         <div class="form-grid">
@@ -268,15 +314,21 @@
         </div>
 
         <div class="photo-preview" id="cover-preview"></div>
+
       </section>
 
+      <!-- GALERÍA FOTOGRÁFICA -->
+
       <section class="gallery-editor">
+
         <div class="space-head">
+
           <h3>Galería fotográfica</h3>
 
           <button id="add-photo" type="button" class="btn btn-outline btn-small">
             ＋ Agregar fotografía
           </button>
+
         </div>
 
         <p class="muted">
@@ -285,16 +337,21 @@
         </p>
 
         <div id="photos-list"></div>
+
       </section>
 
-      <!-- Se conserva la sección de espacios adicionales -->
+      <!-- ESPACIOS DE LA CASA -->
+
       <section class="spaces-editor">
+
         <div class="space-head">
+
           <h3>Espacios de la casa</h3>
 
           <button id="add-space" type="button" class="btn btn-outline btn-small">
             ＋ Agregar espacio
           </button>
+
         </div>
 
         <p class="muted">
@@ -303,9 +360,13 @@
         </p>
 
         <div id="spaces-list"></div>
+
       </section>
 
+      <!-- ACCIONES -->
+
       <div class="form-actions">
+
         <button class="btn btn-dark" type="submit">
           Guardar inmueble
         </button>
@@ -313,14 +374,17 @@
         <button id="delete-property" class="btn btn-danger" type="button">
           Eliminar inmueble
         </button>
+
       </div>
 
     </form>
+
   </section>
 
   <!-- AYUDA -->
 
   <section class="admin-help">
+
     <h2>Cómo publicar los cambios</h2>
 
     <ol>
@@ -340,10 +404,12 @@
       pero no las sube automáticamente a GitHub. Debes colocar los archivos
       en <code>img/casas/</code> y subirlos al repositorio.
     </p>
+
   </section>
 
 </main>
 
 <script src="js/admin.js"></script>
+
 </body>
 </html>
