@@ -368,21 +368,44 @@ ${
 }
           </div>
 
-                   <aside class="detail-aside">
-            <h3>¿Te interesa esta propiedad?</h3>
-            <p>Contáctanos para solicitar información, conocer detalles o coordinar una visita.</p>
+                             <aside class="detail-aside">
 
-            <a class="btn btn-dark" target="_blank" rel="noopener" href="${waLink(message)}">
+            <h3>Atención personalizada</h3>
+
+            <p>
+              Tu asesor para esta propiedad:
+            </p>
+
+            <p><strong>${esc(advisorLabel)}</strong></p>
+
+            <p class="muted">
+              Estamos disponibles para proporcionarte información,
+              resolver tus dudas y coordinar una visita.
+            </p>
+
+            <a
+              class="btn btn-dark"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="${personalizedWhatsApp}"
+            >
               Consultar por WhatsApp
             </a>
 
-            <a class="btn btn-outline" href="${emailLink("Información: " + p.titulo, message)}">
+            <a
+              class="btn btn-outline"
+              href="${personalizedEmail}"
+            >
               Solicitar por correo
             </a>
 
-            <button class="btn btn-outline" onclick="window.print()">
+            <button
+              class="btn btn-outline"
+              onclick="window.print()"
+            >
               Imprimir ficha
             </button>
+
           </aside>
         </div>
       `;
