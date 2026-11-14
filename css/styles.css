@@ -439,11 +439,66 @@ nav a:hover {
   overflow: hidden;
 }
 
+/* Fotografía principal */
+
+.property-detail-hero {
+  display: block;
+  height: auto;
+  margin: 20px 0 10px;
+}
+
+.detail-main-photo {
+  width: 100%;
+  min-width: 0;
+}
+
+.detail-photo-button,
+.gallery-photo-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Portada completa, sin recortes */
+.detail-photo-button {
+  background: #f7f6f2;
+}
+
 .detail-photo-button img {
   display: block;
   width: 100%;
   height: 440px;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+}
+
+.main-photo-caption {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.photo-open-hint {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 7px 11px;
+  background: rgba(23,42,58,.82);
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: .04em;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.detail-photo-button:hover .photo-open-hint,
+.gallery-photo-button:hover .photo-open-hint {
+  opacity: 1;
 }
 
 .main-photo-caption {
