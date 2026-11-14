@@ -1493,6 +1493,7 @@ nav a:hover {
 
   .detail-photo-button img {
     height: 350px;
+    object-fit: contain;
   }
 
   .property-price-banner strong {
@@ -1667,9 +1668,10 @@ nav a:hover {
     height: 230px;
   }
 
-  .detail-photo-button img {
-    height: 260px;
-  }
+.detail-photo-button img {
+  height: 260px;
+  object-fit: contain;
+}
 
   .property-price-banner {
     align-items: flex-start;
