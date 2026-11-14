@@ -49,6 +49,11 @@ const blank = () => ({
   antiguedad: "",
   servicios: [],
   entorno: [],
+  asesor: {
+    nombre: "",
+    telefono: "",
+    correo: ""
+  },
   portada: "",
   portadaTitulo: "Fachada principal",
   fotos: [],
@@ -232,6 +237,16 @@ function normalizePropertyPaths(property) {
   // Los inmuebles anteriores se consideran no destacados.
   property.destacado = property.destacado === true;
 
+     // Normalizar los datos del asesor sin afectar inmuebles anteriores.
+  const asesor = property.asesor || {};
+
+  property.asesor = {
+    ...asesor,
+    nombre: String(asesor.nombre || ""),
+    telefono: String(asesor.telefono || ""),
+    correo: String(asesor.correo || "")
+  };
+   
   return property;
 }
 
@@ -442,7 +457,10 @@ function selectProperty(id, draft = null) {
     antiguedad: p.antiguedad,
     servicios: (p.servicios || []).join(", "),
     entorno: (p.entorno || []).join(", "),
-    portadaTitulo: p.portadaTitulo || "Fachada principal"
+    portadaTitulo: p.portadaTitulo || "Fachada principal",
+    asesorNombre: p.asesor?.nombre || "",
+    asesorTelefono: p.asesor?.telefono || "",
+    asesorCorreo: p.asesor?.correo || ""
   };
 
   Object.entries(values).forEach(([key, value]) => {
