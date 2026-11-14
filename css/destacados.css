@@ -1,0 +1,140 @@
+
+#featured-homes {
+  display: block;
+}
+
+.featured-carousel {
+  width: 100%;
+  position: relative;
+}
+
+.featured-slide {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  min-height: 390px;
+  background: var(--white, #fff);
+  border: 1px solid var(--line, #e4e2dc);
+  overflow: hidden;
+}
+
+.featured-slide-image {
+  min-height: 390px;
+  background: #e9e7e1;
+}
+
+.featured-slide-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 390px;
+  object-fit: cover;
+}
+
+.featured-no-image {
+  min-height: 390px;
+  display: grid;
+  place-items: center;
+  color: var(--muted, #687782);
+  letter-spacing: .15em;
+}
+
+.featured-slide-content {
+  padding: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.featured-slide-content h3 {
+  margin: 8px 0 12px;
+  color: var(--ink, #172a3a);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1.15;
+}
+
+.featured-location {
+  color: var(--muted, #687782);
+  margin: 0 0 18px;
+}
+
+.featured-description {
+  line-height: 1.7;
+  color: var(--muted, #687782);
+}
+
+.featured-price {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--ink, #172a3a);
+  margin: 12px 0 24px;
+}
+
+.featured-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 20px 0 0;
+}
+
+.featured-arrow {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line, #e4e2dc);
+  background: transparent;
+  color: var(--ink, #172a3a);
+  border-radius: 50%;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.featured-arrow:hover {
+  background: var(--ink, #172a3a);
+  color: white;
+}
+
+.featured-dots {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.featured-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #c8c8c8;
+  cursor: pointer;
+}
+
+.featured-dot.active {
+  background: var(--gold, #b89b68);
+  transform: scale(1.25);
+}
+
+@media (max-width: 760px) {
+  .featured-slide {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-slide-image,
+  .featured-slide-image img {
+    min-height: 250px;
+    max-height: 300px;
+  }
+
+  .featured-slide-content {
+    padding: 26px 22px 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured-dot {
+    transform: none;
+  }
+}
