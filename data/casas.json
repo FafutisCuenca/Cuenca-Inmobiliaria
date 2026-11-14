@@ -59,21 +59,21 @@
       "muy cerac de plazas comerciales y tiendas departamentales / autoservicio en la zona de Polanco",
       "Toreo e Interlomas."
     ],
-    "portada": "img/casas/Fachada-Principal.jpeg",
+    "portada": "img/casas/INM-0002/Fachada-Principal.jpeg",
     "portadaTitulo": "Fachada principal",
     "fotos": [
       {
-        "archivo": "img/casas/Estancia-Sala.jpeg",
+        "archivo": "img/casas/INM-0002/Estancia-Sala.jpeg",
         "titulo": "Estancia Principal",
         "principalImpresion": true
       },
       {
-        "archivo": "img/casas/Estancia-Escaleras.jpeg",
+        "archivo": "img/casas/INM-0002/Estancia-Escaleras.jpeg",
         "titulo": "Zona de Escaleras (sube a recamaras / baja a estacionamiento, cuarto de servicio y lavado)",
         "principalImpresion": true
       },
       {
-        "archivo": "img/casas/Salita.jpeg",
+        "archivo": "img/casas/INM-0002/Salita.jpeg",
         "titulo": "Espacio en Entrada Principal - Recibidor",
         "principalImpresion": true
       }
@@ -82,12 +82,12 @@
       {
         "nombre": "Estacionamiento",
         "descripcion": "Estacionamiento hasta para 6 autos en área cubierta.",
-        "foto": "img/casas/Estacionamiento - Sotano.jpeg"
+        "foto": "img/casas/INM-0002/Estacionamiento - Sotano.jpeg"
       },
       {
         "nombre": "Cocina",
         "descripcion": "Vista de la cocina, espacio de fregadero y lavavajilla (incluida)",
-        "foto": "img/casas/Cocina-Fregadero-Lavavajillas.jpeg"
+        "foto": "img/casas/INM-0002/Cocina-Fregadero-Lavavajillas.jpeg"
       }
     ]
   },
@@ -122,21 +122,21 @@
     "entorno": [
       "Cerca del Centro Recreativo \"Campestre Las Truchas\""
     ],
-    "portada": "img/casas/Cabañas-006.jpeg",
+    "portada": "img/casas/INM-0003/Cabañas-006.jpeg",
     "portadaTitulo": "Fachada principal",
     "fotos": [
       {
-        "archivo": "img/casas/Cabañas-005.jpeg",
+        "archivo": "img/casas/INM-0003/Cabañas-005.jpeg",
         "titulo": "Acceso",
         "principalImpresion": true
       },
       {
-        "archivo": "img/casas/Cabañas-007.jpeg",
+        "archivo": "img/casas/INM-0003/Cabañas-007.jpeg",
         "titulo": "Estancia",
         "principalImpresion": true
       },
       {
-        "archivo": "img/casas/Cabañas-024.jpeg",
+        "archivo": "img/casas/INM-0003/Cabañas-024.jpeg",
         "titulo": "Cocina",
         "principalImpresion": true
       }
@@ -145,12 +145,12 @@
       {
         "nombre": "Recámara",
         "descripcion": "",
-        "foto": "img/casas/Cabañas-027.jpeg"
+        "foto": "img/casas/INM-0003/Cabañas-027.jpeg"
       },
       {
         "nombre": "Patio Interno",
         "descripcion": "",
-        "foto": "img/casas/Cabañas-004.jpeg"
+        "foto": "img/casas/INM-0003/Cabañas-004.jpeg"
       }
     ]
   }
