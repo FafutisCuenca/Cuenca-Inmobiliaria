@@ -368,7 +368,7 @@ ${
 }
           </div>
 
-          <aside class="detail-aside">
+                   <aside class="detail-aside">
             <h3>¿Te interesa esta propiedad?</h3>
             <p>Contáctanos para solicitar información, conocer detalles o coordinar una visita.</p>
 
