@@ -90,5 +90,68 @@
         "foto": "img/casas/Cocina-Fregadero-Lavavajillas.jpeg"
       }
     ]
+  },
+  {
+    "id": "635a9c86-ac11-40e1-b8e6-1c140cd5839a",
+    "folio": "INM-0003",
+    "estado": "vendida",
+    "titulo": "Cabaña",
+    "precio": 4000000,
+    "negociable": true,
+    "descripcion": "Linda Cabaña para fines de semana, en excelentes estado de funcionamiento, con acabados estilo mexicano, totalmente funcional y lista para habitarse.",
+    "estadoUbicacion": "Puebla",
+    "municipio": "Huachinango",
+    "colonia": "Antonio Amador Quintero",
+    "cp": "",
+    "direccion": "Huachinango, Puebla, Cerca de \"Campestre Las Truchas\"",
+    "terreno": 325,
+    "construccion": 450,
+    "recamaras": 5,
+    "banos": 5,
+    "mediosBanos": 1,
+    "estacionamientos": 2,
+    "niveles": 2,
+    "antiguedad": null,
+    "servicios": [
+      "Cisterna",
+      "Gas estacionario",
+      "cuenta con balcones",
+      "área de jardin",
+      "cocina equipada y Jacuzzi"
+    ],
+    "entorno": [
+      "Cerca del Centro Recreativo \"Campestre Las Truchas\""
+    ],
+    "portada": "img/casas/Cabañas-006.jpeg",
+    "portadaTitulo": "Fachada principal",
+    "fotos": [
+      {
+        "archivo": "img/casas/Cabañas-005.jpeg",
+        "titulo": "Acceso",
+        "principalImpresion": true
+      },
+      {
+        "archivo": "img/casas/Cabañas-007.jpeg",
+        "titulo": "Estancia",
+        "principalImpresion": true
+      },
+      {
+        "archivo": "img/casas/Cabañas-024.jpeg",
+        "titulo": "Cocina",
+        "principalImpresion": true
+      }
+    ],
+    "espacios": [
+      {
+        "nombre": "Recámara",
+        "descripcion": "",
+        "foto": "img/casas/Cabañas-027.jpeg"
+      },
+      {
+        "nombre": "Patio Interno",
+        "descripcion": "",
+        "foto": "img/casas/Cabañas-004.jpeg"
+      }
+    ]
   }
 ]
