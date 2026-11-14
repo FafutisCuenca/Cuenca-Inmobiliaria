@@ -187,6 +187,31 @@ function summarySpecifications(p) {
       const message =
         `Hola, me interesa recibir información sobre ${p.titulo} (${p.folio}).`;
 
+      // Datos del asesor asignado a esta propiedad.
+      const advisor = p.asesor || {};
+
+      const advisorName = String(advisor.nombre || "").trim();
+      const advisorPhone = String(advisor.telefono || "").replace(/\D/g, "");
+      const advisorEmail = String(advisor.correo || "").trim();
+
+      // Si falta algún dato, utilizamos el contacto general de CUENCA.
+      const contactPhone = advisorPhone || SITE_CONFIG.whatsapp;
+      const contactEmail = advisorEmail || SITE_CONFIG.email;
+
+      const advisorLabel = advisorName || (
+        advisorPhone || advisorEmail
+          ? "Asesor asignado"
+          : "Equipo CUENCA"
+      );
+
+      const personalizedWhatsApp =
+        `https://wa.me/${contactPhone}?text=${encodeURIComponent(message)}`;
+
+      const personalizedEmail =
+        `mailto:${contactEmail}?subject=${encodeURIComponent(
+          "Información: " + p.titulo
+        )}&body=${encodeURIComponent(message)}`;
+
       lightboxPhotos = [];
 
       if (p.portada) {
