@@ -30,19 +30,48 @@
       margin-bottom: 20px;
     }
 
-    /* El destacado ocupa una fila completa */
+    /* Identificación: el destacado ocupa una fila completa */
     .admin-grid-identification .admin-featured-field {
       grid-column: 1 / -1;
       width: 100%;
-      padding: 8px 0;
+      padding: 5px 0 8px;
     }
 
-    /* Texto de ayuda del inmueble destacado */
+    /* Check de inmueble destacado: diseño compacto */
+    .admin-featured-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0;
+      padding: 0;
+      color: var(--ink, #172a3a);
+      font-size: 0.96rem;
+      font-weight: 600;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+
+    .admin-featured-option input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      min-width: 17px;
+      margin: 0;
+      padding: 0;
+      accent-color: var(--gold, #b89b68);
+      cursor: pointer;
+    }
+
     .admin-featured-help {
       display: block;
-      margin: 6px 0 0 24px;
+      margin: 5px 0 0 26px;
       color: var(--muted, #687782);
+      font-size: 0.84rem;
       line-height: 1.5;
+    }
+
+    /* Separación visual entre inventario y editor */
+    .admin-editor-view {
+      margin-top: 30px;
     }
   </style>
 </head>
@@ -93,7 +122,7 @@
     Cargando inventario de inmuebles...
   </p>
 
-  <!-- PANTALLA 1: INVENTARIO COMPLETO -->
+  <!-- INVENTARIO COMPLETO -->
 
   <section id="admin-inventory-view" class="admin-view admin-inventory-view">
 
@@ -108,7 +137,7 @@
 
   </section>
 
-  <!-- PANTALLA 2: EDICIÓN DEL INMUEBLE -->
+  <!-- EDITOR DEL INMUEBLE -->
 
   <section id="admin-editor-view" class="admin-view admin-editor-view" hidden>
 
@@ -148,14 +177,13 @@
 
           <div class="admin-featured-field">
 
-            <label class="admin-print-photo-option">
+            <label class="admin-featured-option">
               <input type="checkbox" name="destacado">
-              Mostrar como inmueble destacado
+              <span>Mostrar como inmueble destacado</span>
             </label>
 
             <small class="admin-featured-help">
-              Este inmueble aparecerá en el carrusel de Inicio únicamente
-              si también está publicado.
+              Aparecerá en el carrusel de Inicio si también está publicado.
             </small>
 
           </div>
@@ -227,7 +255,7 @@
 
       </section>
 
-      <!-- CARACTERÍSTICAS -->
+      <!-- CARACTERÍSTICAS DEL INMUEBLE -->
 
       <section class="admin-form-section">
 
