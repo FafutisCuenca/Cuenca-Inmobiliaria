@@ -325,7 +325,14 @@ function summarySpecifications(p) {
                     <h2>Ubicación</h2>
                     <p>${esc(locationText)}</p>
                     ${p.mapa
-                      ? `<a class="text-link" target="_blank" rel="noopener" href="${esc(p.mapa)}">Consultar mapa →</a>`
+                      ? `<a
+  class="text-link"
+  href="${esc(p.mapa || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(locationText)))}"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Ver ubicación en Google Maps →
+</a>`
                       : ""
                     }
                   </section>`
