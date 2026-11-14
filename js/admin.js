@@ -190,12 +190,18 @@ function showInventory() {
 }
 
 function showEditor() {
-  $("#admin-inventory-view").hidden = true;
+  // Conservamos el inventario visible.
+  $("#admin-inventory-view").hidden = false;
+
+  // Abrimos el editor debajo del inventario.
   $("#admin-editor-view").hidden = false;
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+  // Desplazamos la vista hacia abajo, hasta el editor.
+  requestAnimationFrame(() => {
+    $("#admin-editor-view").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   });
 }
 
@@ -212,6 +218,7 @@ function backToInventory() {
 }
 
 $("#back-to-inventory").onclick = backToInventory;
+
 
 /* =====================================================
    INVENTARIO DE INMUEBLES
