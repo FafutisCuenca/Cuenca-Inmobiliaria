@@ -325,13 +325,19 @@ ${
         <h2>Ubicación</h2>
         <p>${esc(locationText)}</p>
         <a
-          class="text-link"
-          href="${esc(p.mapa || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(locationText)))}"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Ver ubicación en Google Maps →
-        </a>
+  class="text-link"
+  href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    [p.direccion, p.colonia, p.municipio, p.estadoUbicacion, p.cp, "México"]
+      .filter(Boolean)
+      .join(", ")
+      .replace(/^C\.\s*/i, "Calle ")
+      .replace(/#/g, "")
+  )}"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Ver ubicación en Google Maps →
+</a>
       </section>`
     : ""
 }
