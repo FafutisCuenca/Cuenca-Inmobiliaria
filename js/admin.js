@@ -825,9 +825,18 @@ $("#property-form").onsubmit = e => {
   const folio = existing?.folio || d.folio || nextFolio();
 
   const p = {
+    // Conservar cualquier dato adicional que ya tuviera el inmueble.
+    ...(existing || {}),
+
     id: d.id || currentId,
     folio,
     estado: d.estado,
+
+    asesor: {
+      nombre: (d.asesorNombre || "").trim(),
+      telefono: (d.asesorTelefono || "").trim(),
+      correo: (d.asesorCorreo || "").trim()
+    },
 
     // Solo se considera destacado cuando la casilla está marcada.
     destacado: f.elements.destacado?.checked === true,
