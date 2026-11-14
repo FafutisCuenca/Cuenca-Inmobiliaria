@@ -1725,3 +1725,35 @@ nav a:hover {
     grid-column: 1 / -1;
   }
 }
+
+
+.admin-featured-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  font-weight: 600;
+  color: var(--ink, #172a3a);
+}
+
+.admin-featured-option input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold, #b89b68);
+}
+
+.admin-featured-help {
+  display: block;
+  margin: 6px 0 0 28px;
+  color: var(--muted, #687782);
+  line-height: 1.5;
+}
+
+.admin-property-featured {
+  display: inline-block;
+  margin-top: 7px;
+  color: var(--gold, #b89b68);
+  font-size: .82rem;
+  font-weight: 700;
+}
+
