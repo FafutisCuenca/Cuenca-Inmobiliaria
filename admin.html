@@ -37,37 +37,44 @@
       padding: 5px 0 8px;
     }
 
-    /* Check de inmueble destacado: diseño compacto */
-    .admin-featured-option {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin: 0;
-      padding: 0;
-      color: var(--ink, #172a3a);
-      font-size: 0.96rem;
-      font-weight: 600;
-      line-height: 1.4;
-      cursor: pointer;
-    }
+   
+/* Check compacto de inmueble destacado */
+.admin-featured-option {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 9px;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: var(--ink, #172a3a);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+}
 
-    .admin-featured-option input[type="checkbox"] {
-      width: 17px;
-      height: 17px;
-      min-width: 17px;
-      margin: 0;
-      padding: 0;
-      accent-color: var(--gold, #b89b68);
-      cursor: pointer;
-    }
+.admin-featured-option input[type="checkbox"] {
+  appearance: auto !important;
+  display: inline-block !important;
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex: 0 0 17px;
+  accent-color: var(--gold, #b89b68);
+  cursor: pointer;
+}
 
-    .admin-featured-help {
-      display: block;
-      margin: 5px 0 0 26px;
-      color: var(--muted, #687782);
-      font-size: 0.84rem;
-      line-height: 1.5;
-    }
+.admin-featured-help {
+  display: block;
+  margin: 5px 0 0 26px;
+  color: var(--muted, #687782);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
 
     /* Separación visual entre inventario y editor */
     .admin-editor-view {
