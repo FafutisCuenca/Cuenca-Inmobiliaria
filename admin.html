@@ -11,10 +11,7 @@
       display: none !important;
     }
 
-    .admin-inventory-view {
-      width: 100%;
-    }
-
+    .admin-inventory-view,
     .admin-editor-view {
       width: 100%;
     }
@@ -30,6 +27,33 @@
 
     .admin-inventory-heading {
       margin-bottom: 20px;
+    }
+
+    .admin-featured-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      font-weight: 600;
+      color: var(--ink, #172a3a);
+    }
+
+    .admin-featured-option input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--gold, #b89b68);
+    }
+
+    .admin-featured-help {
+      display: block;
+      margin: 6px 0 0 28px;
+      color: var(--muted, #687782);
+      line-height: 1.5;
+    }
+
+    .admin-featured-field {
+      grid-column: 1 / -1;
+      padding-top: 8px;
     }
   </style>
 </head>
@@ -72,9 +96,7 @@
     Cargando inventario de inmuebles...
   </p>
 
-  <!-- =================================================
-       PANTALLA 1: INVENTARIO COMPLETO
-       ================================================= -->
+  <!-- PANTALLA 1: INVENTARIO COMPLETO -->
 
   <section id="admin-inventory-view" class="admin-view admin-inventory-view">
 
@@ -89,9 +111,7 @@
 
   </section>
 
-  <!-- =================================================
-       PANTALLA 2: EDICIÓN DEL INMUEBLE
-       ================================================= -->
+  <!-- PANTALLA 2: EDICIÓN DEL INMUEBLE -->
 
   <section id="admin-editor-view" class="admin-view admin-editor-view" hidden>
 
@@ -123,14 +143,17 @@
             </select>
           </label>
 
-<label class="admin-featured-option">
-  <input type="checkbox" name="destacado">
-  Mostrar como inmueble destacado
-</label>
+          <div class="admin-featured-field">
+            <label class="admin-featured-option">
+              <input type="checkbox" name="destacado">
+              Mostrar como inmueble destacado
+            </label>
 
-<small class="admin-featured-help">
-  Este inmueble aparecerá en el carrusel de Inicio únicamente si también está publicado.
-</small>
+            <small class="admin-featured-help">
+              Este inmueble aparecerá en el carrusel de Inicio únicamente
+              si también está publicado.
+            </small>
+          </div>
 
         </div>
 
@@ -316,9 +339,7 @@
     </form>
   </section>
 
-  <!-- =================================================
-       AYUDA
-       ================================================= -->
+  <!-- AYUDA -->
 
   <section class="admin-help">
     <h2>Cómo publicar los cambios</h2>
