@@ -29,6 +29,7 @@ const blank = () => ({
     : String(Date.now()) + Math.random().toString(16).slice(2),
   folio: nextFolio(),
   estado: "borrador",
+  destacado: false,
   titulo: "",
   precio: "",
   negociable: true,
@@ -89,7 +90,6 @@ function propertyImagePath(path, folio) {
 
   const value = String(path).trim();
 
-  // No modificar URLs externas ni imágenes temporales.
   if (
     value.startsWith("http://") ||
     value.startsWith("https://") ||
@@ -102,10 +102,8 @@ function propertyImagePath(path, folio) {
   const base = "img/casas/";
   const folder = `${base}${folio}/`;
 
-  // Si ya está en la carpeta correcta, conservar la ruta.
   if (value.startsWith(folder)) return value;
 
-  // Convertir rutas antiguas que estaban directamente en img/casas/.
   if (value.startsWith(base)) {
     const filename = value.substring(base.length).split("/").pop();
     return folder + filename;
@@ -145,6 +143,9 @@ function normalizePropertyPaths(property) {
     ...space,
     foto: propertyImagePath(space.foto, folio)
   }));
+
+  // Los inmuebles anteriores se consideran no destacados.
+  property.destacado = property.destacado === true;
 
   return property;
 }
@@ -280,6 +281,12 @@ function renderList() {
             ${escapeHtml(location || "Ubicación pendiente")}
           </span>
 
+          ${p.destacado === true ? `
+            <span class="admin-property-featured">
+              ★ Inmueble destacado
+            </span>
+          ` : ""}
+
           <span class="admin-property-action">
             Editar inmueble →
           </span>
@@ -351,6 +358,11 @@ function selectProperty(id, draft = null) {
       f.elements[key].value = value ?? "";
     }
   });
+
+  // La casilla se controla mediante checked, no mediante value.
+  if (f.elements.destacado) {
+    f.elements.destacado.checked = p.destacado === true;
+  }
 
   f.elements.portada.value = "";
 
@@ -602,7 +614,7 @@ $("#import-json").onchange = async e => {
     showInventory();
 
     status(
-      "Catálogo importado. Las rutas de fotografías se organizaron por folio en memoria. Exporta casas.json para guardar los cambios."
+      "Catálogo importado. Las rutas de fotografías se organizaron por folio en memoria. Los inmuebles sin selección de destacado aparecen desmarcados. Exporta casas.json para guardar los cambios."
     );
 
   } catch (err) {
@@ -694,6 +706,10 @@ $("#property-form").onsubmit = e => {
     id: d.id || currentId,
     folio,
     estado: d.estado,
+
+    // Solo se considera destacado cuando la casilla está marcada.
+    destacado: f.elements.destacado?.checked === true,
+
     titulo: d.titulo,
     precio: Number(d.precio) || 0,
     negociable: d.negociable === "true",
@@ -746,7 +762,7 @@ $("#property-form").onsubmit = e => {
   showInventory();
 
   status(
-    `Inmueble ${p.folio} guardado correctamente. Sus fotografías utilizan ${propertyFolder(p.folio)}. Descarga casas.json para conservar los cambios.`
+    `Inmueble ${p.folio} guardado correctamente. ${p.destacado ? "Está marcado como destacado." : "No está marcado como destacado."} Sus fotografías utilizan ${propertyFolder(p.folio)}. Descarga casas.json para conservar los cambios.`
   );
 };
 
@@ -806,7 +822,7 @@ $("#export-json").onclick = () => {
   URL.revokeObjectURL(url);
 
   status(
-    "Se descargó casas.json con las rutas de fotografías organizadas por inmueble."
+    "Se descargó casas.json con las rutas de fotografías organizadas por inmueble y la selección de inmuebles destacados."
   );
 };
 
@@ -832,7 +848,7 @@ fetch("data/casas.json")
     showInventory();
 
     status(
-      `Inventario cargado: ${homes.length} inmueble(s). Las rutas de fotografías se organizaron en memoria por folio. Exporta casas.json para guardar los cambios.`
+      `Inventario cargado: ${homes.length} inmueble(s). Los inmuebles sin selección de destacado aparecen desmarcados. Las rutas de fotografías se organizaron en memoria por folio. Exporta casas.json para guardar los cambios.`
     );
   })
   .catch(() => {
