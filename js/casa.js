@@ -38,18 +38,12 @@
     `;
   }
 
-  function specifications(p) {
-    return [
-      specification("Terreno", p.terreno, "m²", "ruler"),
-      specification("Construcción", p.construccion, "m²", "ruler"),
-      specification("Recámaras", p.recamaras, "", "bed"),
-      specification("Baños", p.banos, "", "bath"),
-      specification("Medios baños", p.mediosBanos, "", "shower"),
-      specification("Estacionamientos", p.estacionamientos, "", "car"),
-      specification("Niveles", p.niveles, "", "layers"),
-      specification("Antigüedad", p.antiguedad, "años", "calendar")
-    ].filter(Boolean).join("");
-  }
+function specifications(p) {
+  return [
+    specification("Niveles", p.niveles, "", "layers"),
+    specification("Antigüedad", p.antiguedad, "años", "calendar")
+  ].filter(Boolean).join("");
+}
 
   function summarySpecifications(p) {
     return [
