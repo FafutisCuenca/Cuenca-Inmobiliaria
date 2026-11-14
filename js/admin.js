@@ -60,6 +60,91 @@ function status(t) {
   if (element) element.textContent = t;
 }
 
+/* =====================================================
+   CONSULTA EN LÍNEA DE CÓDIGOS POSTALES
+   Servicio: Postali
+   ===================================================== */
+
+let postalLookupSequence = 0;
+let lastPostalLookup = "";
+
+async function lookupPostalCode(cp, preserveColonia = false) {
+  const form = $("#property-form");
+  const postalStatus = $("#postal-lookup-status");
+
+  if (!/^\d{5}$/.test(String(cp || ""))) return;
+
+  const requestId = ++postalLookupSequence;
+
+  if (postalStatus) {
+    postalStatus.textContent = "Consultando código postal...";
+  }
+
+  try {
+    const response = await fetch(
+      `https://postali.app/api/v1/mx/cp/${encodeURIComponent(cp)}`
+    );
+
+    if (!response.ok) {
+      throw new Error("No se encontró el código postal.");
+    }
+
+    const data = await response.json();
+
+    // Ignorar respuestas de consultas anteriores.
+    if (requestId !== postalLookupSequence) return;
+
+    if (!data.estado || !Array.isArray(data.asentamientos)) {
+      throw new Error("La respuesta del catálogo no es válida.");
+    }
+
+    form.elements.estadoUbicacion.value = data.estado;
+    form.elements.municipio.value = data.municipio || "";
+
+    const options = $("#colonia-options");
+
+    options.innerHTML = data.asentamientos.map(item => `
+      <option value="${escapeHtml(item.nombre)}"></option>
+    `).join("");
+
+    // Al editar conservamos la colonia ya registrada.
+    // Al capturar un nuevo CP dejamos elegir la colonia correspondiente.
+    if (!preserveColonia) {
+      form.elements.colonia.value = "";
+    }
+
+    if (postalStatus) {
+      postalStatus.textContent =
+        `${data.asentamientos.length} colonia(s) encontrada(s). Selecciona una de la lista.`;
+    }
+
+  } catch (error) {
+    if (requestId !== postalLookupSequence) return;
+
+    if (postalStatus) {
+      postalStatus.textContent =
+        "No fue posible consultar el catálogo. Puedes capturar los datos manualmente.";
+    }
+
+    console.warn("Consulta postal:", error);
+  }
+}
+
+// Consultar automáticamente al completar los cinco dígitos.
+$("#property-form").elements.cp.addEventListener("input", event => {
+  const cp = event.target.value.trim();
+
+  if (!/^\d{5}$/.test(cp)) {
+    lastPostalLookup = "";
+    return;
+  }
+
+  if (cp === lastPostalLookup) return;
+
+  lastPostalLookup = cp;
+  lookupPostalCode(cp);
+});
+
 function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({
     "&": "&amp;",
@@ -365,6 +450,18 @@ function selectProperty(id, draft = null) {
       f.elements[key].value = value ?? "";
     }
   });
+
+   // Recuperar también las opciones postales al editar un inmueble.
+const savedCP = String(values.cp || "").trim();
+
+if (/^\d{5}$/.test(savedCP)) {
+  lastPostalLookup = savedCP;
+  lookupPostalCode(savedCP, true);
+} else {
+  lastPostalLookup = "";
+  postalLookupSequence++;
+  $("#colonia-options").innerHTML = "";
+}
 
   // La casilla se controla mediante checked, no mediante value.
   if (f.elements.destacado) {
