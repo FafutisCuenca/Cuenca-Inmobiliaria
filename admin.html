@@ -231,36 +231,49 @@
       </section>
 
       <!-- UBICACIÓN -->
+      
+<section class="admin-form-section">
+  <h3>Ubicación</h3>
 
-      <section class="admin-form-section">
+  <div class="form-grid">
 
-        <h3>Ubicación</h3>
+    <label>Código postal
+      <input
+        name="cp"
+        inputmode="numeric"
+        maxlength="5"
+        autocomplete="postal-code"
+        placeholder="Ej. 53910"
+      >
+      <small id="postal-lookup-status" class="admin-field-note">
+        Escribe los 5 dígitos para consultar el catálogo postal.
+      </small>
+    </label>
 
-        <div class="form-grid">
+    <label>Estado
+      <input name="estadoUbicacion">
+    </label>
 
-          <label>Estado
-            <input name="estadoUbicacion">
-          </label>
+    <label>Municipio / alcaldía
+      <input name="municipio">
+    </label>
 
-          <label>Municipio / alcaldía
-            <input name="municipio">
-          </label>
+    <label>Colonia
+      <input
+        name="colonia"
+        list="colonia-options"
+        autocomplete="off"
+        placeholder="Selecciona o escribe una colonia"
+      >
+      <datalist id="colonia-options"></datalist>
+    </label>
 
-          <label>Colonia
-            <input name="colonia">
-          </label>
+    <label class="full">Dirección pública o referencia
+      <input name="direccion">
+    </label>
 
-          <label>Código postal
-            <input name="cp">
-          </label>
-
-          <label class="full">Dirección pública o referencia
-            <input name="direccion">
-          </label>
-
-        </div>
-
-      </section>
+  </div>
+</section>
 
       <!-- CARACTERÍSTICAS DEL INMUEBLE -->
 
