@@ -80,10 +80,79 @@ function formatPrice(value) {
   });
 }
 
-function normalizePhoto(photo, index) {
+/* =====================================================
+   DIRECTORIO DE FOTOGRAFÍAS POR INMUEBLE
+   ===================================================== */
+
+function propertyImagePath(path, folio) {
+  if (!path || !folio) return path || "";
+
+  const value = String(path).trim();
+
+  // No modificar URLs externas ni imágenes temporales.
+  if (
+    value.startsWith("http://") ||
+    value.startsWith("https://") ||
+    value.startsWith("data:") ||
+    value.startsWith("blob:")
+  ) {
+    return value;
+  }
+
+  const base = "img/casas/";
+  const folder = `${base}${folio}/`;
+
+  // Si ya está en la carpeta correcta, conservar la ruta.
+  if (value.startsWith(folder)) return value;
+
+  // Convertir rutas antiguas que estaban directamente en img/casas/.
+  if (value.startsWith(base)) {
+    const filename = value.substring(base.length).split("/").pop();
+    return folder + filename;
+  }
+
+  return value;
+}
+
+function propertyFolder(folio) {
+  return `img/casas/${folio}/`;
+}
+
+function normalizePropertyPaths(property) {
+  if (!property || typeof property !== "object") return property;
+
+  const folio = property.folio;
+  if (!folio) return property;
+
+  property.portada = propertyImagePath(property.portada, folio);
+
+  property.fotos = (property.fotos || []).map(photo => {
+    if (typeof photo === "string") {
+      return propertyImagePath(photo, folio);
+    }
+
+    if (photo && typeof photo === "object") {
+      return {
+        ...photo,
+        archivo: propertyImagePath(photo.archivo, folio)
+      };
+    }
+
+    return photo;
+  });
+
+  property.espacios = (property.espacios || []).map(space => ({
+    ...space,
+    foto: propertyImagePath(space.foto, folio)
+  }));
+
+  return property;
+}
+
+function normalizePhoto(photo, index, folio) {
   if (typeof photo === "string") {
     return {
-      archivo: photo,
+      archivo: propertyImagePath(photo, folio),
       titulo: `Fotografía ${index + 1}`,
       principalImpresion: false,
       preview: ""
@@ -92,7 +161,7 @@ function normalizePhoto(photo, index) {
 
   if (photo && typeof photo === "object" && photo.archivo) {
     return {
-      archivo: photo.archivo,
+      archivo: propertyImagePath(photo.archivo, folio),
       titulo: photo.titulo || `Fotografía ${index + 1}`,
       principalImpresion: photo.principalImpresion === true,
       preview: ""
@@ -100,6 +169,14 @@ function normalizePhoto(photo, index) {
   }
 
   return null;
+}
+
+function currentFolio() {
+  return $("#property-form")?.elements.folio?.value || nextFolio();
+}
+
+function currentImageFolder() {
+  return propertyFolder(currentFolio());
 }
 
 /* =====================================================
@@ -122,7 +199,6 @@ function showEditor() {
 }
 
 function backToInventory() {
-  // Si era un inmueble nuevo y no se guardó, se descarta.
   if (isNewProperty) {
     currentId = null;
     isNewProperty = false;
@@ -225,15 +301,21 @@ function selectProperty(id, draft = null) {
   const p = draft || homes.find(x => x.id === id);
   if (!p) return;
 
+  normalizePropertyPaths(p);
+
   currentId = id;
 
   coverData = p.portada || "";
   coverPreview = "";
 
-  spaces = structuredClone(p.espacios || []);
+  spaces = (p.espacios || []).map(space => ({
+    ...space,
+    foto: propertyImagePath(space.foto, p.folio),
+    preview: ""
+  }));
 
   photos = (p.fotos || [])
-    .map(normalizePhoto)
+    .map((photo, index) => normalizePhoto(photo, index, p.folio))
     .filter(Boolean);
 
   const f = $("#property-form");
@@ -341,7 +423,7 @@ function renderPhotos() {
           <input
             data-field="archivo"
             value="${escapeHtml(photo.archivo)}"
-            placeholder="img/casas/nombre-foto.jpeg"
+            placeholder="${escapeHtml(currentImageFolder())}nombre-foto.jpeg"
           >
         </label>
 
@@ -380,13 +462,13 @@ function renderPhotos() {
       const file = e.target.files[0];
       if (!file) return;
 
-      photos[i].archivo = "img/casas/" + file.name;
+      photos[i].archivo = currentImageFolder() + file.name;
       photos[i].preview = URL.createObjectURL(file);
 
       renderPhotos();
 
       status(
-        `Fotografía seleccionada. Recuerda copiar ${file.name} a img/casas/ y subirla a GitHub.`
+        `Fotografía seleccionada. Copia ${file.name} a ${currentImageFolder()} y súbela a GitHub.`
       );
     };
 
@@ -420,7 +502,6 @@ function renderPhotos() {
 
 /* =====================================================
    ESPACIOS ADICIONALES
-   Se conserva el funcionamiento que ya tienes.
    ===================================================== */
 
 function renderSpaces() {
@@ -456,7 +537,7 @@ function renderSpaces() {
         <input
           data-field="rutaFoto"
           value="${escapeHtml(s.foto || "")}"
-          placeholder="img/casas/archivo.jpeg"
+          placeholder="${escapeHtml(currentImageFolder())}nombre-foto.jpeg"
         >
       </div>
 
@@ -475,13 +556,13 @@ function renderSpaces() {
           const file = el.files[0];
           if (!file) return;
 
-          spaces[i].foto = "img/casas/" + file.name;
+          spaces[i].foto = currentImageFolder() + file.name;
           spaces[i].preview = URL.createObjectURL(file);
 
           renderSpaces();
 
           status(
-            `Fotografía seleccionada. Copia ${file.name} a img/casas/ y súbela a GitHub.`
+            `Fotografía seleccionada. Copia ${file.name} a ${currentImageFolder()} y súbela a GitHub.`
           );
         };
       } else if (el.dataset.field === "rutaFoto") {
@@ -513,7 +594,7 @@ $("#import-json").onchange = async e => {
       throw Error("El archivo debe contener un arreglo JSON.");
     }
 
-    homes = parsed;
+    homes = parsed.map(normalizePropertyPaths);
     currentId = null;
     isNewProperty = false;
 
@@ -521,7 +602,7 @@ $("#import-json").onchange = async e => {
     showInventory();
 
     status(
-      "Catálogo importado correctamente. Selecciona un inmueble para editarlo."
+      "Catálogo importado. Las rutas de fotografías se organizaron por folio en memoria. Exporta casas.json para guardar los cambios."
     );
 
   } catch (err) {
@@ -538,8 +619,6 @@ $("#import-json").onchange = async e => {
 function resetForm() {
   const p = blank();
 
-  // El inmueble nuevo todavía no se agrega al inventario.
-  // Se incorpora al arreglo homes únicamente al guardarlo.
   currentId = p.id;
   isNewProperty = true;
 
@@ -548,7 +627,7 @@ function resetForm() {
   $("#editor-heading").textContent = "Nuevo inmueble · " + p.folio;
 
   status(
-    `Nuevo inmueble iniciado con el folio ${p.folio}. Completa sus datos y guarda para incorporarlo al inventario.`
+    `Nuevo inmueble iniciado con el folio ${p.folio}. Sus fotografías deberán guardarse en ${propertyFolder(p.folio)}.`
   );
 }
 
@@ -588,13 +667,13 @@ $("#property-form").elements.portada.onchange = e => {
   const file = e.target.files[0];
   if (!file) return;
 
-  coverData = "img/casas/" + file.name;
+  coverData = currentImageFolder() + file.name;
   coverPreview = URL.createObjectURL(file);
 
   renderCover();
 
   status(
-    `Portada seleccionada. Copia ${file.name} a img/casas/ y súbela a GitHub.`
+    `Portada seleccionada. Copia ${file.name} a ${currentImageFolder()} y súbela a GitHub.`
   );
 };
 
@@ -609,10 +688,11 @@ $("#property-form").onsubmit = e => {
   const d = Object.fromEntries(new FormData(f).entries());
 
   const existing = homes.find(x => x.id === (d.id || currentId));
+  const folio = existing?.folio || d.folio || nextFolio();
 
   const p = {
     id: d.id || currentId,
-    folio: existing?.folio || d.folio || nextFolio(),
+    folio,
     estado: d.estado,
     titulo: d.titulo,
     precio: Number(d.precio) || 0,
@@ -633,12 +713,12 @@ $("#property-form").onsubmit = e => {
     antiguedad: d.antiguedad === "" ? null : Number(d.antiguedad),
     servicios: (d.servicios || "").split(",").map(x => x.trim()).filter(Boolean),
     entorno: (d.entorno || "").split(",").map(x => x.trim()).filter(Boolean),
-    portada: coverData,
+    portada: propertyImagePath(coverData, folio),
     portadaTitulo: d.portadaTitulo || "Fachada principal",
     fotos: photos
       .filter(photo => photo.archivo)
       .map(photo => ({
-        archivo: photo.archivo,
+        archivo: propertyImagePath(photo.archivo, folio),
         titulo: photo.titulo || "Fotografía de la propiedad",
         principalImpresion: photo.principalImpresion === true
       })),
@@ -647,7 +727,7 @@ $("#property-form").onsubmit = e => {
       .map(s => ({
         nombre: s.nombre,
         descripcion: s.descripcion || "",
-        foto: s.foto || ""
+        foto: propertyImagePath(s.foto, folio)
       }))
   };
 
@@ -666,7 +746,7 @@ $("#property-form").onsubmit = e => {
   showInventory();
 
   status(
-    `Inmueble ${p.folio} guardado correctamente en esta sesión. El inventario está actualizado. Descarga casas.json al terminar para conservar los cambios.`
+    `Inmueble ${p.folio} guardado correctamente. Sus fotografías utilizan ${propertyFolder(p.folio)}. Descarga casas.json para conservar los cambios.`
   );
 };
 
@@ -726,7 +806,7 @@ $("#export-json").onclick = () => {
   URL.revokeObjectURL(url);
 
   status(
-    "Se descargó casas.json con los inmuebles guardados en esta sesión."
+    "Se descargó casas.json con las rutas de fotografías organizadas por inmueble."
   );
 };
 
@@ -744,7 +824,7 @@ fetch("data/casas.json")
       throw new Error("El archivo no contiene un catálogo válido.");
     }
 
-    homes = data;
+    homes = data.map(normalizePropertyPaths);
     currentId = null;
     isNewProperty = false;
 
@@ -752,7 +832,7 @@ fetch("data/casas.json")
     showInventory();
 
     status(
-      `Inventario cargado correctamente: ${homes.length} inmueble(s). Selecciona uno para editarlo.`
+      `Inventario cargado: ${homes.length} inmueble(s). Las rutas de fotografías se organizaron en memoria por folio. Exporta casas.json para guardar los cambios.`
     );
   })
   .catch(() => {
